@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/bindings/game_binding.dart';
+import 'package:handy_dandy_app/screens/finish_game/finish_game_screen.dart';
 import 'package:handy_dandy_app/screens/game/game_screen.dart';
 import 'package:handy_dandy_app/screens/home/home_screen.dart';
 import 'package:handy_dandy_app/screens/login/login_screen.dart';
@@ -13,6 +15,8 @@ class AppPages {
     GetPage(name: Routes.HOME, page: () => HomeScreen()),
     GetPage(name: Routes.LOGIN, page: () => LoginScreen()),
     GetPage(name: Routes.SIGNUP, page: () => SignupScreen()),
-    GetPage(name: Routes.GAME, page: () => GameScreen()),
+    GetPage(
+        name: Routes.GAME, page: () => GameScreen(), binding: GameBinding()),
+    GetPage(name: Routes.FINISH_GAME, page: () => FinishGameScreen())
   ];
 }

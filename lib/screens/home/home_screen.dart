@@ -18,6 +18,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: Center(
               child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: () {
@@ -29,11 +30,11 @@ class HomeScreen extends StatelessWidget {
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: primaryColor,
+                    color: Colors.blue,
                   ),
                   child: Center(
                       child: Text(
-                    'بازی با کامپیوتر',
+                    'شروع بازی',
                     style: TextStyle(color: Colors.white),
                   )),
                 ),
