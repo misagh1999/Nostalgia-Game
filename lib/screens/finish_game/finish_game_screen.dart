@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
-
-import '../../utils/utils.dart';
+import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 class FinishGameScreen extends StatelessWidget {
   FinishGameScreen({Key? key}) : super(key: key);
@@ -15,17 +16,7 @@ class FinishGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWin = Get.arguments['isWin'] as bool;
     return Scaffold(
-      appBar: AppBar(actions: [
-        Center(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Obx(
-            () => Text(
-              replacePersianNum(homeController.totalScore.toString()),
-            ),
-          ),
-        ))
-      ]),
+      appBar: buildMyAppBar(title: 'پایان'),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(16),
@@ -33,6 +24,19 @@ class FinishGameScreen extends StatelessWidget {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                width: Get.width / 4,
+                height: Get.width / 4,
+                child: SvgPicture.asset(
+                  isWin
+                      ? "assets/images/happy-face.svg"
+                      : "assets/images/sad-face.svg",
+                  color: isWin ? Colors.green : Colors.red,
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
               Text(
                 isWin ? 'شما برنده شدید.' : 'شما باختید',
                 style: TextStyle(
@@ -54,18 +58,29 @@ class FinishGameScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(16)),
-                  child: Text(
-                    'بازی مجدد',
-                    style: TextStyle(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'بازی مجدد',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: Fonts.Black,
+                            fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      FaIcon(
+                        FontAwesomeIcons.rotateLeft,
                         color: Colors.white,
-                        fontFamily: Fonts.Black,
-                        fontSize: 20),
+                      )
+                    ],
                   ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  // todo: get of
                   Get.back();
                 },
                 child: Container(

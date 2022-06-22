@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class HomeController extends GetxController {
-  RxInt totalScore = 2.obs;
+  RxInt totalScore = 0.obs;
   RxInt currentTypeScore = 25.obs;
-  RxInt currentTypeIndex = 0.obs;
+  RxInt currentTypeIndex = 2.obs;
 
   @override
   void onInit() {

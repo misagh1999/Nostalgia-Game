@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
+import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 class ReadyGameScreen extends StatelessWidget {
   ReadyGameScreen({Key? key}) : super(key: key);
@@ -13,24 +14,7 @@ class ReadyGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'توضیحات بازی',
-          style: TextStyle(fontSize: 16),
-        ),
-        actions: [
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Obx(
-              () => Text(
-                replacePersianNum(homeController.totalScore.toString()),
-              ),
-            ),
-          ))
-        ],
-        centerTitle: true,
-      ),
+      appBar: buildMyAppBar(title: 'توضیحات بازی'),
       body: SafeArea(
         child: Obx(
           () => Container(

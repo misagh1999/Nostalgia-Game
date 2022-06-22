@@ -84,9 +84,7 @@ class GameController extends GetxController {
   nextTurn() {
     isSelectState.value = true;
     _setRandomBox();
-    if (restTurn.value == 0) {
-      _finishGame();
-    }
+    
   }
 
   _finishGame() async {
@@ -111,6 +109,9 @@ class GameController extends GetxController {
       isTrue.value = false;
     }
     if (live.value == 0) {
+      _finishGame();
+    }
+    if (restTurn.value == 0) {
       _finishGame();
     }
   }

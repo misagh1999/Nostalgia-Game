@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
+import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 
 import '../../controllers/home_controller.dart';
@@ -16,24 +17,7 @@ class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'بازی اصلی',
-          style: TextStyle(fontSize: 16),
-        ),
-        actions: [
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Obx(
-              () => Text(
-                replacePersianNum(homeController.totalScore.toString()),
-              ),
-            ),
-          ))
-        ],
-        centerTitle: true,
-      ),
+      appBar: buildMyAppBar(title: 'بازی اصلی'),
       body: SafeArea(
         child: Obx(
           () => Container(
