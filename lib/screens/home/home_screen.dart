@@ -28,11 +28,11 @@ class HomeScreen extends StatelessWidget {
                   Get.toNamed(Routes.READY_GAME);
                 },
                 child: Container(
-                  width: Get.width / 2.25,
-                  height: Get.width / 2.25,
+                  width: Get.width / 2.5,
+                  height: Get.width / 2.5,
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(24),
                     color: primaryColor,
                   ),
                   child: Center(

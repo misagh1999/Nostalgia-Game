@@ -65,7 +65,7 @@ class GameScreen extends StatelessWidget {
                           height: Get.width / 2.5,
                           decoration: BoxDecoration(
                               color: controller.boxColor1.value,
-                              borderRadius: BorderRadius.circular(16)),
+                              borderRadius: BorderRadius.circular(24)),
                           child: Center(
                               child: Text(
                             'جعبه ۱',
@@ -88,7 +88,7 @@ class GameScreen extends StatelessWidget {
                           height: Get.width / 2.5,
                           decoration: BoxDecoration(
                               color: controller.boxColor2.value,
-                              borderRadius: BorderRadius.circular(16)),
+                              borderRadius: BorderRadius.circular(24)),
                           child: Center(
                               child: Text(
                             'جعبه ۲',
