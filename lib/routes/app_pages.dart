@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/bindings/game_binding.dart';
 import 'package:handy_dandy_app/bindings/home_binding.dart';
+import 'package:handy_dandy_app/bindings/online_game_binding.dart';
 import 'package:handy_dandy_app/screens/finish_game/finish_game_screen.dart';
 import 'package:handy_dandy_app/screens/game/game_screen.dart';
 import 'package:handy_dandy_app/screens/home/home_screen.dart';
 import 'package:handy_dandy_app/screens/login/login_screen.dart';
+import 'package:handy_dandy_app/screens/online_game/ready/main/online_main_game_screen.dart';
+import 'package:handy_dandy_app/screens/online_game/ready/online_ready_game_screen.dart';
 import 'package:handy_dandy_app/screens/ready_game/ready_game_screen.dart';
 import 'package:handy_dandy_app/screens/signup/signup_screen.dart';
 import 'package:handy_dandy_app/screens/welcome/welcome_screen.dart';
@@ -21,6 +24,11 @@ class AppPages {
     GetPage(
         name: Routes.GAME, page: () => GameScreen(), binding: GameBinding()),
     GetPage(name: Routes.FINISH_GAME, page: () => FinishGameScreen()),
-    GetPage(name: Routes.READY_GAME, page: () => ReadyGameScreen())
+    GetPage(name: Routes.READY_GAME, page: () => ReadyGameScreen()),
+    GetPage(
+        name: Routes.READY_ONLINE_GAME,
+        page: () => OnlineReadyGameScreen(),
+        binding: OnlineGameBinding()),
+    GetPage(name: Routes.ONLINE_GAME, page: () => OnlineMainGameScreen())
   ];
 }
