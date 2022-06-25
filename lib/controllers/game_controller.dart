@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
+import 'package:handy_dandy_app/widgets/dialog.dart';
 
 class GameController extends GetxController {
   RxInt restTurn = 5.obs;
@@ -84,7 +85,19 @@ class GameController extends GetxController {
   nextTurn() {
     isSelectState.value = true;
     _setRandomBox();
-    
+  }
+
+  onWillPop() {
+    showMyDialog(
+        title: 'خروج از بازی',
+        message: 'آیا برای خروج اطمینان دارید؟',
+        onCancel: () {
+          Get.back();
+        },
+        onConfirm: () {
+          Get.back();
+          Get.back();
+        });
   }
 
   _finishGame() async {
