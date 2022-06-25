@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
@@ -6,6 +7,7 @@ import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 import '../../controllers/home_controller.dart';
+import '../../widgets/rest_live_widget.dart';
 import 'components/box_widget.dart';
 
 class GameScreen extends StatelessWidget {
@@ -25,20 +27,31 @@ class GameScreen extends StatelessWidget {
             child: Center(
                 child: Column(
               children: [
+                Text(
+                  'امتیاز',
+                  style:
+                      TextStyle(fontFamily: Fonts.Medium, color: Colors.grey),
+                ),
+                Text(
+                  replacePersianNum(homeController.currentTypeScore.toString()),
+                  style: TextStyle(fontFamily: Fonts.Black, fontSize: 20),
+                ),
                 Row(
                   children: [
-                    Text('نوبت باقی مانده: '),
+                    Text(
+                      'نوبت باقی مانده: ',
+                      style: TextStyle(
+                          fontFamily: Fonts.Medium, color: Colors.grey),
+                    ),
                     Obx(() => Text(
                           replacePersianNum(
                               controller.restTurn.value.toString()),
                           style:
-                              TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
+                              TextStyle(fontFamily: Fonts.Bold, fontSize: 20),
                         )),
                     Spacer(),
-                    Text('جان: '),
-                    Text(
-                      replacePersianNum(controller.live.value.toString()),
-                      style: TextStyle(fontFamily: Fonts.Bold, fontSize: 20),
+                    RestLiveWidget(
+                      restLive: controller.live.value,
                     )
                   ],
                 ),

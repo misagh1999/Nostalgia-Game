@@ -48,7 +48,13 @@ class HomeScreen extends StatelessWidget {
                   press: () {
                     Get.toNamed(Routes.READY_ONLINE_GAME);
                   },
-                )
+                ),
+                // todo: remove it later
+                ElevatedButton(
+                    onPressed: () {
+                      controller.addScore();
+                    },
+                    child: Text('test score'))
               ],
             )),
           ),
