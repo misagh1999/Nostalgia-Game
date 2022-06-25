@@ -18,5 +18,10 @@ abstract class Fonts {
   static const Black = "Black";
 }
 
+abstract class Assets {
+  // todo: do it later
+  static const LOGO = "assets/images/logo.png";
+}
+
 const READY_DESC =
     'این بازی در ۵ نوبت انجام می‌شود. در هر نوبت شما باید گزینه مورد نظر را حدس بزنید. همچنین شما در طول بازی ۳ جان دارید. در صورت برنده شدن یا باختن به ترتیب به میزان امتیاز مشخص شده از مجموع امتیازات شما اضافه یا کاستته می‌شود. ';

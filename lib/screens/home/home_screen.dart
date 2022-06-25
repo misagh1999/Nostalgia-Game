@@ -8,6 +8,7 @@ import 'package:handy_dandy_app/routes/app_pages.dart';
 
 import '../../widgets/app_bar.dart';
 import 'components/home_button_widget.dart';
+import 'components/my_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildMyAppBar(title: 'گل یا پوچ'),
+      drawer: buildMyDrawer(),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
@@ -50,11 +52,11 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 // todo: remove it later
-                ElevatedButton(
-                    onPressed: () {
-                      controller.addScore();
-                    },
-                    child: Text('test score'))
+                // ElevatedButton(
+                //     onPressed: () {
+                //       controller.addScore();
+                //     },
+                //     child: Text('test score'))
               ],
             )),
           ),

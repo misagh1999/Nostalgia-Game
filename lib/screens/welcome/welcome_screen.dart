@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 
 import '../../routes/app_pages.dart';
+import '../../utils/utils.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -41,10 +42,18 @@ class WelcomeScreen extends StatelessWidget {
             'برنامه‌نویس: محمدحسین میثاق‌پور',
             style: TextStyle(color: Colors.grey),
           ),
-          Text(
-            'v 1.0.0',
-            style: TextStyle(color: Colors.grey),
-          )
+          FutureBuilder(
+              future: getVersionNumber(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text("v " + (snapshot.data as String),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ));
+                } else {
+                  return SizedBox();
+                }
+              }),
         ],
       )),
     );
