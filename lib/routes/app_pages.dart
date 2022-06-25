@@ -6,11 +6,12 @@ import 'package:handy_dandy_app/screens/finish_game/finish_game_screen.dart';
 import 'package:handy_dandy_app/screens/game/game_screen.dart';
 import 'package:handy_dandy_app/screens/home/home_screen.dart';
 import 'package:handy_dandy_app/screens/login/login_screen.dart';
-import 'package:handy_dandy_app/screens/online_game/ready/main/online_main_game_screen.dart';
 import 'package:handy_dandy_app/screens/online_game/ready/online_ready_game_screen.dart';
 import 'package:handy_dandy_app/screens/ready_game/ready_game_screen.dart';
 import 'package:handy_dandy_app/screens/signup/signup_screen.dart';
 import 'package:handy_dandy_app/screens/welcome/welcome_screen.dart';
+
+import '../screens/online_game/main/online_main_game_screen.dart';
 
 part 'app_routes.dart';
 

@@ -5,8 +5,8 @@ import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
-
 import '../../controllers/home_controller.dart';
+import 'components/box_widget.dart';
 
 class GameScreen extends StatelessWidget {
   GameScreen({Key? key}) : super(key: key);
@@ -55,48 +55,24 @@ class GameScreen extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (controller.isSelectState.value)
-                            controller.onSelectBox1();
-                        },
-                        child: Container(
-                          height: Get.width / 2.5,
-                          decoration: BoxDecoration(
-                              color: controller.boxColor1.value,
-                              borderRadius: BorderRadius.circular(24)),
-                          child: Center(
-                              child: Text(
-                            'جعبه ۱',
-                            style: TextStyle(
-                                fontFamily: Fonts.Black, fontSize: 20),
-                          )),
-                        ),
-                      ),
+                    BoxWidget(
+                      title: 'جعبه ۱',
+                      color: controller.boxColor1.value,
+                      press: () {
+                        if (controller.isSelectState.value)
+                          controller.onSelectBox1();
+                      },
                     ),
                     SizedBox(
                       width: 12,
                     ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (controller.isSelectState.value)
-                            controller.onSelectBox2();
-                        },
-                        child: Container(
-                          height: Get.width / 2.5,
-                          decoration: BoxDecoration(
-                              color: controller.boxColor2.value,
-                              borderRadius: BorderRadius.circular(24)),
-                          child: Center(
-                              child: Text(
-                            'جعبه ۲',
-                            style: TextStyle(
-                                fontFamily: Fonts.Black, fontSize: 20),
-                          )),
-                        ),
-                      ),
+                    BoxWidget(
+                      title: 'جعبه ۲',
+                      color: controller.boxColor2.value,
+                      press: () {
+                        if (controller.isSelectState.value)
+                          controller.onSelectBox2();
+                      },
                     ),
                   ],
                 ),
