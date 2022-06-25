@@ -5,11 +5,10 @@ import 'package:get/get.dart';
 import '../../../constants.dart';
 
 class PlayButtonWidget extends StatelessWidget {
-  const PlayButtonWidget({
-    Key? key,
-    required this.press,
-  }) : super(key: key);
+  const PlayButtonWidget({Key? key, required this.press, this.isEnabled = true})
+      : super(key: key);
   final VoidCallback press;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,8 @@ class PlayButtonWidget extends StatelessWidget {
         height: Get.width / 3,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: primaryColor, borderRadius: BorderRadius.circular(24)),
+            color: this.isEnabled ? primaryColor : Colors.grey,
+            borderRadius: BorderRadius.circular(24)),
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

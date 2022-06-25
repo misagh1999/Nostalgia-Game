@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
@@ -75,8 +76,15 @@ class ReadyGameScreen extends StatelessWidget {
                 Spacer(),
                 PlayButtonWidget(
                   press: () {
-                    Get.offNamed(Routes.GAME);
+                    if (homeController.totalScore.value >=
+                        homeController.currentTypeScore.value) {
+                      Get.offNamed(Routes.GAME);
+                    } else {
+                      Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
+                    }
                   },
+                  isEnabled: homeController.totalScore.value >=
+                      homeController.currentTypeScore.value,
                 ),
                 Spacer(
                   flex: 2,

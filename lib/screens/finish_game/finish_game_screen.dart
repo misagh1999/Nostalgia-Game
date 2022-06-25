@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
@@ -50,13 +51,21 @@ class FinishGameScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.back();
-                  Get.toNamed(Routes.GAME);
+                  if (homeController.totalScore.value >=
+                      homeController.currentTypeScore.value) {
+                    Get.back();
+                    Get.toNamed(Routes.GAME);
+                  } else {
+                    Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: homeController.totalScore.value >=
+                              homeController.currentTypeScore.value
+                          ? primaryColor
+                          : Colors.grey,
                       borderRadius: BorderRadius.circular(16)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
