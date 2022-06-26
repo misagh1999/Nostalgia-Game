@@ -47,14 +47,15 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 12),
-                HomeButtonWidget(
-                  title: 'بازی آنلاین',
-                  icon: FontAwesomeIcons.solidCirclePlay,
-                  color: secondaryColor,
-                  press: () {
-                    Get.toNamed(Routes.READY_ONLINE_GAME);
-                  },
-                ),
+                // todo:  ignored temp
+                // HomeButtonWidget(
+                //   title: 'بازی آنلاین',
+                //   icon: FontAwesomeIcons.solidCirclePlay,
+                //   color: secondaryColor,
+                //   press: () {
+                //     Get.toNamed(Routes.READY_ONLINE_GAME);
+                //   },
+                // ),
                 Spacer(),
                 GestureDetector(
                   onTap: () {
