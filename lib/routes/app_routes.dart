@@ -10,4 +10,5 @@ abstract class Routes {
   static const READY_GAME = '/ready_game';
   static const READY_ONLINE_GAME = '/ready_online_game';
   static const ONLINE_GAME = '/online_game';
+  static const DAILY_LOTTERY = '/daily_lottery';
 }

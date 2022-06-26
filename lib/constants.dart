@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final primaryColor = Colors.purple;
-final secondaryColor = Colors.amber;
+final secondaryColor = Colors.orange;
 
 var primaryGradint =
     LinearGradient(colors: [primaryColor.withOpacity(0.8), primaryColor]);
@@ -24,4 +24,4 @@ abstract class Assets {
 }
 
 const READY_DESC =
-    'این بازی در ۵ نوبت انجام می‌شود. در هر نوبت شما باید گزینه مورد نظر را حدس بزنید. همچنین شما در طول بازی ۳ جان دارید. در صورت برنده شدن یا باختن به ترتیب به میزان امتیاز مشخص شده از مجموع امتیازات شما اضافه یا کاستته می‌شود. ';
+    'این بازی در ۵ نوبت انجام می‌شود. در هر نوبت شما باید گزینه مورد نظر را حدس بزنید. همچنین شما در طول بازی ۳ جان دارید. در صورت برنده شدن یا باختن به ترتیب به میزان امتیاز مشخص شده از مجموع امتیازات شما اضافه یا کاسته می‌شود. ';

@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/bindings/game_binding.dart';
 import 'package:handy_dandy_app/bindings/home_binding.dart';
+import 'package:handy_dandy_app/bindings/lottery_binding.dart';
 import 'package:handy_dandy_app/bindings/online_game_binding.dart';
+import 'package:handy_dandy_app/screens/daily_lottery/daily_lottery_screen.dart';
 import 'package:handy_dandy_app/screens/finish_game/finish_game_screen.dart';
 import 'package:handy_dandy_app/screens/game/game_screen.dart';
 import 'package:handy_dandy_app/screens/home/home_screen.dart';
@@ -30,6 +32,10 @@ class AppPages {
         name: Routes.READY_ONLINE_GAME,
         page: () => OnlineReadyGameScreen(),
         binding: OnlineGameBinding()),
-    GetPage(name: Routes.ONLINE_GAME, page: () => OnlineMainGameScreen())
+    GetPage(name: Routes.ONLINE_GAME, page: () => OnlineMainGameScreen()),
+    GetPage(
+        name: Routes.DAILY_LOTTERY,
+        page: () => DailyLotteryScreen(),
+        binding: LotteryBinding())
   ];
 }

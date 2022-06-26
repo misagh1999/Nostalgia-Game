@@ -1,5 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
@@ -34,6 +35,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Spacer(),
                 HomeButtonWidget(
                   title: 'شروع بازی',
                   icon: FontAwesomeIcons.solidCirclePlay,
@@ -51,12 +53,31 @@ class HomeScreen extends StatelessWidget {
                     Get.toNamed(Routes.READY_ONLINE_GAME);
                   },
                 ),
-                // todo: remove it later
-                // ElevatedButton(
-                //     onPressed: () {
-                //       controller.addScore();
-                //     },
-                //     child: Text('test score'))
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.DAILY_LOTTERY);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 3, color: primaryColor)),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('قرعه کشی روزانه'),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        SvgPicture.asset(
+                          'assets/lottery.svg',
+                          width: 36,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ],
             )),
           ),

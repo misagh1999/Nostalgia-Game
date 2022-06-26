@@ -45,7 +45,7 @@ class OnlineGameController extends GetxController {
     } else {
       result = "حریف شما در حال انتخاب است";
       if (canGuess.value) {
-        result = 'حدس خود را بنویسید';
+        result = 'حدس خود را بزنید';
       }
     }
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:handy_dandy_app/widgets/dialog.dart';
@@ -22,7 +23,7 @@ class GameController extends GetxController {
   Rx<Color> get boxColor1 {
     var result = Colors.grey;
     if (isSelectState.value) {
-      result = Colors.orange;
+      result = secondaryColor;
     } else {
       if (selectedBox.value == 1) {
         if (isTrue.value) {
@@ -42,7 +43,7 @@ class GameController extends GetxController {
   Rx<Color> get boxColor2 {
     var result = Colors.grey;
     if (isSelectState.value) {
-      result = Colors.orange;
+      result = secondaryColor;
     } else {
       if (selectedBox.value == 2) {
         if (isTrue.value) {

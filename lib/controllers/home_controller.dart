@@ -44,6 +44,12 @@ class HomeController extends GetxController {
     box.put('total_score', totalScore.value);
   }
 
+  addLotteryScore(int score) async {
+    totalScore.value = totalScore.value + score;
+    Box box = await Hive.openBox('db');
+    box.put('total_score', totalScore.value);
+  }
+
   subtractScore() async {
     totalScore.value = totalScore.value - currentTypeScore.value;
     Box box = await Hive.openBox('db');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
@@ -64,7 +65,7 @@ class GameScreen extends StatelessWidget {
                     height: 50,
                     child: controller.isSelectState.value
                         ? Text(
-                            'یک جعبه را انتخاب کنید',
+                            'حدس خود را بزنید',
                             style: TextStyle(
                                 fontFamily: Fonts.Medium, fontSize: 18),
                           )
@@ -111,11 +112,22 @@ class GameScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: primaryColor,
                                       borderRadius: BorderRadius.circular(16)),
-                                  child: Text(
-                                    'نوبت بعد',
-                                    style: TextStyle(
-                                        fontFamily: Fonts.Bold,
-                                        color: Colors.white),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'نوبت بعد',
+                                        style: TextStyle(
+                                            fontFamily: Fonts.Bold,
+                                            fontSize: 18,
+                                            color: Colors.white),
+                                      ),
+                                      SizedBox(width: 6,),
+                                      FaIcon(
+                                        FontAwesomeIcons.rotateLeft,
+                                        color: Colors.white,
+                                      )
+                                    ],
                                   ),
                                 ),
                               )
