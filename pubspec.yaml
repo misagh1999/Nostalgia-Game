@@ -28,6 +28,7 @@ dependencies:
   double_back_to_close_app: ^2.1.0
   fluttertoast: ^8.0.9
   android_intent_plus: ^3.1.1
+  parse_server_sdk_flutter: ^3.1.2
 
 
 

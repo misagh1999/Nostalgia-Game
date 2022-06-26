@@ -1,5 +1,7 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../constants.dart';
 import 'my_button.dart';
@@ -30,6 +32,50 @@ showMyDialog(
               bgColor: Colors.white,
               titleColor: primaryColor,
               press: onCancel),
+        ],
+      ));
+}
+
+showUpdateDialog() {
+  Get.defaultDialog(
+      title: 'بروزرسانی نسخه جدید',
+      titleStyle: TextStyle(color: primaryColor),
+      content: Column(
+        children: [
+          Text(
+            'نسخه جدید اپلیکیشن در دسترس است.',
+            style: TextStyle(fontFamily: Fonts.Medium),
+          ),
+          Divider(),
+          SizedBox(
+            height: 16,
+          ),
+          MyButton(
+              title: 'دریافت',
+              press: () async {
+                PackageInfo packageInfo = await PackageInfo.fromPlatform();
+                final packageName = packageInfo.packageName;
+                Get.back();
+                Get.back();
+                if (GetPlatform.isAndroid) {
+                  AndroidIntent intent = AndroidIntent(
+                      action: 'android.intent.action.VIEW',
+                      data: Uri.parse("bazaar://details?id=" + packageName)
+                          .toString(),
+                      package: "com.farsitel.bazaar");
+                  intent.launch();
+                }
+              }),
+          SizedBox(
+            height: 16,
+          ),
+          MyButton(
+              title: 'بستن',
+              bgColor: Colors.white,
+              titleColor: primaryColor,
+              press: () {
+                Get.back();
+              }),
         ],
       ));
 }

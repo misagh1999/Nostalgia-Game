@@ -1,6 +1,7 @@
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../constants.dart';
 import '../../../utils/utils.dart';
@@ -65,13 +66,14 @@ Drawer buildMyDrawer() {
         ListTile(
           leading: Icon(Icons.rate_review),
           title: Text('امتیاز به برنامه'),
-          onTap: () {
-            const PACKAGE_NAME = "ir.misaghpour.handy_dandy_app";
+          onTap: () async {
+            PackageInfo packageInfo = await PackageInfo.fromPlatform();
+            final packageName = packageInfo.packageName;
             Get.back();
             if (GetPlatform.isAndroid) {
               AndroidIntent intent = AndroidIntent(
                   action: 'android.intent.action.EDIT',
-                  data: Uri.parse("bazaar://details?id=" + PACKAGE_NAME)
+                  data: Uri.parse("bazaar://details?id=" + packageName)
                       .toString(),
                   package: "com.farsitel.bazaar");
               intent.launch();

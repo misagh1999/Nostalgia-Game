@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
+import 'package:handy_dandy_app/utils/utils.dart';
 
 import '../../widgets/app_bar.dart';
 import 'components/home_button_widget.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    showUpdateDialogIfAvailable();
     return Scaffold(
       appBar: buildMyAppBar(title: 'گل یا پوچ'),
       drawer: buildMyDrawer(),
