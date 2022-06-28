@@ -99,6 +99,7 @@ class GameController extends GetxController {
         onConfirm: () {
           Get.back();
           Get.back();
+          Get.back();
         });
   }
 

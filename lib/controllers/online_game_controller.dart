@@ -8,6 +8,8 @@ import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
+import '../widgets/dialog.dart';
+
 class OnlineGameController extends GetxController {
   late Socket socket;
 
@@ -114,6 +116,20 @@ class OnlineGameController extends GetxController {
   void onClose() {
     socket.disconnect();
     super.onClose();
+  }
+
+  onWillPop() {
+    showMyDialog(
+        title: 'خروج از بازی',
+        message: 'آیا برای خروج اطمینان دارید؟',
+        onCancel: () {
+          Get.back();
+        },
+        onConfirm: () {
+          Get.back();
+          Get.back();
+          Get.back();
+        });
   }
 
   @override
