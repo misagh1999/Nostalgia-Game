@@ -25,7 +25,7 @@ class ReadyGameScreen extends StatelessWidget {
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
-                Text(READY_DESC),
+                Text(READY_DESC, textAlign: TextAlign.justify,),
                 SizedBox(
                   height: 36,
                 ),

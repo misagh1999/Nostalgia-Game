@@ -12,6 +12,7 @@ class RestLiveWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double size = 20;
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         restLive >= 3
             ? SvgPicture.asset(

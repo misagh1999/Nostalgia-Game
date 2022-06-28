@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/online_game_controller.dart';
+import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/widgets/rest_live_widget.dart';
 
 class OnlineMainGameScreen extends StatelessWidget {
   OnlineMainGameScreen({Key? key}) : super(key: key);
@@ -25,64 +28,80 @@ class OnlineMainGameScreen extends StatelessWidget {
                 children: [
                   Text('نوبت باقی مانده'),
                   Text(
-                    controller.restTurn.toString(),
-                    style: TextStyle(fontFamily: Fonts.Bold),
+                    replacePersianNum(controller.restTurn.toString()),
+                    style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
                   ),
+                  SizedBox(height: 12,),
                   Row(
                     children: [
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: controller.yourColor.value,
-                            border: controller.isYourTurn.value
-                                ? Border.all(width: 2, color: primaryColor)
-                                : null,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          children: [
-                            Text(controller.yourAlias.value),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              controller.yourLive.toString(),
-                              style: TextStyle(fontFamily: Fonts.Bold),
-                            ),
-                          ],
+                      Expanded(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 100),
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: controller.yourColor.value,
+                              border: controller.isYourTurn.value
+                                  ? Border.all(width: 2, color: primaryColor)
+                                  : null,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(controller.yourAlias.value),
+                              RestLiveWidget(
+                                  restLive: controller.yourLive.value)
+                            ],
+                          ),
                         ),
                       ),
-                      Spacer(),
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            border: controller.isYourTurn.value
-                                ? null
-                                : Border.all(width: 2, color: primaryColor),
-                            color: controller.rivalColor.value,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          children: [
-                            Text(
-                              controller.rivalLive.toString(),
-                              style: TextStyle(fontFamily: Fonts.Bold),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text(controller.rivalAlias.value),
-                          ],
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 100),
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              border: controller.isYourTurn.value
+                                  ? null
+                                  : Border.all(width: 2, color: primaryColor),
+                              color: controller.rivalColor.value,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                controller.rivalAlias.toString(),
+                              ),
+                              RestLiveWidget(
+                                  restLive: controller.rivalLive.value)
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
+                  Spacer(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        controller.messageTitle.value,
+                        style: TextStyle(fontFamily: Fonts.Medium),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      controller.isSelectingRival.value
+                          ? SpinKitCircle(
+                              color: primaryColor,
+                              size: 20,
+                            )
+                          : SizedBox()
+                    ],
+                  ),
                   SizedBox(
                     height: 16,
-                  ),
-                  Text(controller.messageTitle.value),
-                  SizedBox(
-                    height: 12,
                   ),
                   Row(
                     children: [
@@ -118,10 +137,8 @@ class OnlineMainGameScreen extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            // todo:
                             if (controller.canSelect.value ||
                                 controller.canGuess.value) {
-                              // todo:
                               controller.onClickBox(2);
                             }
                           },
@@ -144,8 +161,9 @@ class OnlineMainGameScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // SizedBox(height: 12,),
-                  // Text(controller.resultMessage.value)
+                  Spacer(
+                    flex: 2,
+                  )
                 ],
               ),
             ),

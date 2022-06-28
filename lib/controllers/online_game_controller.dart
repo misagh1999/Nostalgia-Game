@@ -48,21 +48,27 @@ class OnlineGameController extends GetxController {
   Rx<Color> yourColor = Colors.white.obs;
   Rx<Color> rivalColor = Colors.white.obs;
 
+  RxBool isSelectingRival = false.obs;
+
   RxString get messageTitle {
     var result = "----";
+    isSelectingRival.value = true;
 
     if (isYourTurn.value) {
       result = 'حریف شما در حال حدس زدن است';
       if (canSelect.value) {
         result = "گزینه خود را انتخاب کنید";
+        isSelectingRival.value = false;
       }
       if (canGuess.value) {
         result = "حدس خود را بزنید";
+        isSelectingRival.value = false;
       }
     } else {
       result = "حریف شما در حال انتخاب است";
       if (canGuess.value) {
         result = 'حدس خود را بزنید';
+        isSelectingRival.value = false;
       }
     }
 
@@ -76,7 +82,7 @@ class OnlineGameController extends GetxController {
     } else {
       yourColor.value = Colors.red;
     }
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 500));
     yourColor.value = Colors.white;
   }
 
@@ -87,7 +93,7 @@ class OnlineGameController extends GetxController {
     } else {
       rivalColor.value = Colors.red;
     }
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 500));
     rivalColor.value = Colors.white;
   }
 
