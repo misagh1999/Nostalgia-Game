@@ -32,7 +32,7 @@ class AppPages {
         name: Routes.READY_ONLINE_GAME,
         page: () => OnlineReadyGameScreen(),
         binding: OnlineGameBinding()),
-    GetPage(name: Routes.ONLINE_GAME, page: () => OnlineMainGameScreen()),
+    GetPage(name: Routes.ONLINE_GAME, page: () => OnlineMainGameScreen(), binding: OnlineGameBinding()),
     GetPage(
         name: Routes.DAILY_LOTTERY,
         page: () => DailyLotteryScreen(),

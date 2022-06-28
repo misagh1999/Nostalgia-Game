@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/controllers/network_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
@@ -8,6 +10,13 @@ class OnlineGameController extends GetxController {
   late Socket socket;
 
   TextEditingController aliasTextController = TextEditingController();
+  final NetworkController networkController = Get.find();
+
+  RxBool get hasInternetConnection {
+    var result = false;
+    result = networkController.connectionType.value != 0;
+    return result.obs;
+  }
 
   RxString yourId = "".obs;
   RxString rivalId = "".obs;
@@ -84,15 +93,17 @@ class OnlineGameController extends GetxController {
     var uuid = Uuid();
 
     yourId.value = uuid.v4();
-    
+
     socket = io(
       // 'ws://192.168.1.70:3000',
-      'http://misaghpour-dev.ir',
+      'https://misaghpour-dev.ir',
       OptionBuilder()
           .setTransports(['websocket']) // for Flutter or Dart VM
           .disableAutoConnect() // disable auto-connection
           .build(),
     );
+
+    socket.onConnectError((data) => print(data));
 
     socket.connect();
 
@@ -103,6 +114,10 @@ class OnlineGameController extends GetxController {
     _listenSockets();
 
     super.onInit();
+  }
+
+  reConnectSocket() {
+    if (networkController.connectionType.value != 0) socket.connect();
   }
 
   _listenSockets() {
@@ -144,9 +159,6 @@ class OnlineGameController extends GetxController {
 
     socket.on('onSelect', (data) {
       final Map<String, dynamic> message = data;
-
-      print('onSelect');
-      print(message);
 
       final rBoxNumber = int.parse(message['boxNumber'] as String);
       final rSenderId = message['senderId'] as String;
@@ -244,11 +256,17 @@ class OnlineGameController extends GetxController {
   }
 
   requestToJoin() {
-    if (aliasTextController.text.isNotEmpty) {
-      yourAlias.value = aliasTextController.text;
-      socket.emit('join', {"id": yourId.value, "alias": yourAlias.value});
-      aliasTextController.text = "";
-      isFinding.value = true;
+    if (hasInternetConnection.value) {
+      if (aliasTextController.text.trim() != "") {
+        yourAlias.value = aliasTextController.text;
+        socket.emit('join', {"id": yourId.value, "alias": yourAlias.value});
+        aliasTextController.text = "";
+        isFinding.value = true;
+      } else {
+        Fluttertoast.showToast(msg: 'نام مستعار خود را وارد کنید');
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'اتصال به اینترنت وجود ندارد');
     }
   }
 }
