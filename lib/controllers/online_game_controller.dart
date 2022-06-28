@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/controllers/network_controller.dart';
+import 'package:handy_dandy_app/data/enums/result_online_game.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
@@ -11,6 +13,7 @@ class OnlineGameController extends GetxController {
 
   TextEditingController aliasTextController = TextEditingController();
   final NetworkController networkController = Get.find();
+  final HomeController homeController = Get.find();
 
   RxBool get hasInternetConnection {
     var result = false;
@@ -91,6 +94,8 @@ class OnlineGameController extends GetxController {
   @override
   void onInit() {
     var uuid = Uuid();
+
+    homeController.select50Score();
 
     yourId.value = uuid.v4();
 
@@ -202,6 +207,7 @@ class OnlineGameController extends GetxController {
         } else if (turnIndex.value == 2) {
           turnIndex.value = 1;
           restTurn.value = restTurn.value - 1;
+          _checkFinishGame();
         }
       }
     });
@@ -240,7 +246,52 @@ class OnlineGameController extends GetxController {
     } else if (turnIndex.value == 2) {
       turnIndex.value = 1;
       restTurn.value = restTurn.value - 1;
+      _checkFinishGame();
     }
+  }
+
+  _checkFinishGame() {
+    ResultGame result = ResultGame.equal;
+    if (yourLive.value == 0 || rivalLive.value == 0) {
+      if (yourLive.value == rivalLive.value) {
+        // no one win
+        result = ResultGame.equal;
+      } else if (yourLive.value == 0) {
+        // you lose
+        result = ResultGame.lose;
+      } else if (rivalLive.value == 0) {
+        // alias lost
+        result = ResultGame.win;
+      }
+
+      _goToFinishScreen(result);
+    } else if (restTurn.value == 0) {
+      if (yourLive.value == rivalLive.value) {
+        // no one win
+        result = ResultGame.equal;
+      } else if (yourLive.value > rivalLive.value) {
+        // you win
+        result = ResultGame.win;
+      } else if (yourLive.value < rivalLive.value) {
+        // you lost
+        result = ResultGame.lose;
+      }
+
+      _goToFinishScreen(result);
+    }
+  }
+
+  _goToFinishScreen(ResultGame result) {
+    switch (result) {
+      case ResultGame.lose:
+        homeController.subtractScore();
+        break;
+      case ResultGame.win:
+        homeController.addScore();
+        break;
+      default:
+    }
+    Get.toNamed(Routes.FINISH_GAME, arguments: {"result": result});
   }
 
   onClickBox(int box) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/lottery_controller.dart';
@@ -84,12 +85,19 @@ class DailyLotteryScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: primaryColor,
                                 borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                              'بازگشت',
-                              style: TextStyle(
-                                  fontFamily: Fonts.Bold,
-                                  fontSize: 20,
-                                  color: Colors.white),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                FaIcon(FontAwesomeIcons.arrowRight, color: Colors.white,),
+                                SizedBox(width: 8,),
+                                Text(
+                                  'بازگشت',
+                                  style: TextStyle(
+                                      fontFamily: Fonts.Bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
+                                ),
+                              ],
                             ),
                           ),
                         )

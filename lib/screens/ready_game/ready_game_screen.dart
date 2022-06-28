@@ -78,7 +78,7 @@ class ReadyGameScreen extends StatelessWidget {
                   press: () {
                     if (homeController.totalScore.value >=
                         homeController.currentTypeScore.value) {
-                      Get.offNamed(Routes.GAME);
+                      Get.toNamed(Routes.GAME);
                     } else {
                       Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
                     }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
+import 'package:handy_dandy_app/data/enums/result_online_game.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:handy_dandy_app/widgets/dialog.dart';
 
@@ -104,10 +105,12 @@ class GameController extends GetxController {
   _finishGame() async {
     if (live.value == 0) {
       await homeController.subtractScore();
-      Get.offNamed(Routes.FINISH_GAME, arguments: {"isWin": false});
+      // Get.offNamed(Routes.FINISH_GAME, arguments: {"isWin": false});
+      Get.offNamed(Routes.FINISH_GAME, arguments: {"result": ResultGame.lose});
     } else {
       await homeController.addScore();
-      Get.offNamed(Routes.FINISH_GAME, arguments: {"isWin": true});
+      // Get.offNamed(Routes.FINISH_GAME, arguments: {"isWin": true});
+      Get.offNamed(Routes.FINISH_GAME, arguments: {"result": ResultGame.win});
     }
   }
 
