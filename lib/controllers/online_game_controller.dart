@@ -43,6 +43,9 @@ class OnlineGameController extends GetxController {
 
   RxBool guessTrue = false.obs;
 
+  Rx<Color> yourColor = Colors.white.obs;
+  Rx<Color> rivalColor = Colors.white.obs;
+
   RxString get messageTitle {
     var result = "----";
 
@@ -62,6 +65,28 @@ class OnlineGameController extends GetxController {
     }
 
     return result.obs;
+  }
+
+  _blinkYourColor(bool isTrue) async {
+    //
+    if (isTrue) {
+      yourColor.value = Colors.green;
+    } else {
+      yourColor.value = Colors.red;
+    }
+    await Future.delayed(Duration(milliseconds: 300));
+    yourColor.value = Colors.white;
+  }
+
+  _blinkRivalColor(bool isTrue) async {
+    //
+    if (isTrue) {
+      rivalColor.value = Colors.green;
+    } else {
+      rivalColor.value = Colors.red;
+    }
+    await Future.delayed(Duration(milliseconds: 300));
+    rivalColor.value = Colors.white;
   }
 
   RxString get resultMessage {
@@ -197,8 +222,10 @@ class OnlineGameController extends GetxController {
           if (selectedBox.value != rBoxNumber) {
             rivalLive.value = rivalLive.value - 1;
             guessTrue.value = false;
+            _blinkRivalColor(false);
           } else {
             guessTrue.value = true;
+            _blinkRivalColor(true);
           }
         }
 
@@ -233,8 +260,10 @@ class OnlineGameController extends GetxController {
     if (box != selectedBox.value) {
       yourLive.value = yourLive.value - 1;
       guessTrue.value = false;
+      _blinkYourColor(false);
     } else {
       guessTrue.value = true;
+      _blinkYourColor(true);
     }
 
     isYourTurn.value = !isYourTurn.value;

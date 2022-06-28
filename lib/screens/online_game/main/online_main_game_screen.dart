@@ -26,13 +26,16 @@ class OnlineMainGameScreen extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        color: controller.yourColor.value,
                           border: controller.isYourTurn.value
                               ? Border.all(width: 2, color: primaryColor)
                               : null,
-                          borderRadius: BorderRadius.circular(16)),
+                          borderRadius: BorderRadius.circular(20)),
+                      
                       child: Row(
                         children: [
                           Text(controller.yourAlias.value),
@@ -47,13 +50,15 @@ class OnlineMainGameScreen extends StatelessWidget {
                       ),
                     ),
                     Spacer(),
-                    Container(
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                           border: controller.isYourTurn.value
                               ? null
                               : Border.all(width: 2, color: primaryColor),
-                          borderRadius: BorderRadius.circular(16)),
+                          color: controller.rivalColor.value,
+                          borderRadius: BorderRadius.circular(20)),
                       child: Row(
                         children: [
                           Text(
@@ -136,8 +141,8 @@ class OnlineMainGameScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 12,),
-                Text(controller.resultMessage.value)
+                // SizedBox(height: 12,),
+                // Text(controller.resultMessage.value)
               ],
             ),
           ),
