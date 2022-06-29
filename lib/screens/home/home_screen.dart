@@ -43,6 +43,9 @@ class HomeScreen extends StatelessWidget {
                   icon: FontAwesomeIcons.solidCirclePlay,
                   color: primaryColor,
                   press: () {
+                    controller.analytics
+                        .setCurrentScreen(screenName: 'Offline Game');
+                        controller.analytics.logEvent(name: 'entered_offline');
                     Get.toNamed(Routes.READY_GAME);
                   },
                 ),
@@ -53,6 +56,11 @@ class HomeScreen extends StatelessWidget {
                   icon: FontAwesomeIcons.solidCirclePlay,
                   color: secondaryColor,
                   press: () {
+                    controller.analytics
+                        .setCurrentScreen(screenName: 'Online Game');
+                    controller.analytics.logEvent(name: 'entered_online', parameters: <String, dynamic> {
+                      'string': 'string'
+                    });
                     Get.toNamed(Routes.READY_ONLINE_GAME);
                   },
                 ),
