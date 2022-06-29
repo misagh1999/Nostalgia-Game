@@ -5,6 +5,7 @@ import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/controllers/network_controller.dart';
 import 'package:handy_dandy_app/data/enums/result_online_game.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
+import 'package:hive/hive.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,6 +51,8 @@ class OnlineGameController extends GetxController {
 
   RxBool isSelectingRival = false.obs;
 
+  RxInt totalOnlinePlayers = 0.obs;
+
   RxString get messageTitle {
     var result = "----";
     isSelectingRival.value = true;
@@ -76,7 +79,6 @@ class OnlineGameController extends GetxController {
   }
 
   _blinkYourColor(bool isTrue) async {
-    //
     if (isTrue) {
       yourColor.value = Colors.green;
     } else {
@@ -121,6 +123,7 @@ class OnlineGameController extends GetxController {
   @override
   void onClose() {
     socket.disconnect();
+    socket.dispose();
     super.onClose();
   }
 
@@ -142,13 +145,15 @@ class OnlineGameController extends GetxController {
   void onInit() {
     var uuid = Uuid();
 
+    _readAliasFromCache();
+
     homeController.select50Score();
 
     yourId.value = uuid.v4();
 
     socket = io(
       // 'ws://192.168.1.70:3000',
-      'https://misaghpour-dev.ir',
+      'https://hobby.misaghpour-dev.ir',
       OptionBuilder()
           .setTransports(['websocket']) // for Flutter or Dart VM
           .disableAutoConnect() // disable auto-connection
@@ -161,11 +166,26 @@ class OnlineGameController extends GetxController {
 
     socket.onConnect((_) {
       print('connected to websocket2');
+
+      socket.emit('onlinePlayers');
     });
 
     _listenSockets();
 
     super.onInit();
+  }
+
+  _readAliasFromCache() async {
+    Box box = await Hive.openBox('db');
+    var userAliasCache = box.get('user_alias');
+    if (userAliasCache != null) {
+      aliasTextController.text = userAliasCache as String;
+    }
+  }
+
+  _cacheAlias(String alias) async {
+    Box box = await Hive.openBox('db');
+    box.put('user_alias', alias);
   }
 
   reConnectSocket() {
@@ -228,6 +248,14 @@ class OnlineGameController extends GetxController {
       }
     });
 
+    socket.on('onlinePlayers', (data) {
+      final Map<String, dynamic> message = data;
+
+      final totalNumbers = message['total'] as int;
+      totalOnlinePlayers.value = totalNumbers;
+      print("total: " + totalNumbers.toString());
+    });
+
     socket.on('onGuess', (data) {
       final Map<String, dynamic> message = data;
 
@@ -259,6 +287,23 @@ class OnlineGameController extends GetxController {
           _checkFinishGame();
         }
       }
+    });
+
+    socket.on('onDisconnectRival', (data) async {
+      // todo: show dialog + return to main page
+      // Get.delete<OnlineGameController>();
+      // await Future.delayed(Duration(milliseconds: 250));
+      Get.back();
+      Get.back();
+      // await Future.delayed(Duration(milliseconds: 100));
+      // Get.toNamed(Routes.READY_ONLINE_GAME);
+      await Future.delayed(Duration(milliseconds: 500));
+      Get.snackbar('قطع اتصال حریف', 'رقیب شما از بازی خارج شد',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          padding: EdgeInsets.all(16),
+          duration: Duration(seconds: 4));
     });
   }
 
@@ -360,10 +405,16 @@ class OnlineGameController extends GetxController {
   requestToJoin() {
     if (hasInternetConnection.value) {
       if (aliasTextController.text.trim() != "") {
-        yourAlias.value = aliasTextController.text;
+        yourAlias.value = aliasTextController.text.trim();
+        _cacheAlias(yourAlias.value);
         socket.emit('join', {"id": yourId.value, "alias": yourAlias.value});
-        aliasTextController.text = "";
         isFinding.value = true;
+        Future.delayed(Duration(seconds: 10), () {
+          if (isFinding.value) {
+            isFinding.value = false;
+            Fluttertoast.showToast(msg: 'حریفی پیدا نشد، مجدد تلاش کنید');
+          }
+        });
       } else {
         Fluttertoast.showToast(msg: 'نام مستعار خود را وارد کنید');
       }

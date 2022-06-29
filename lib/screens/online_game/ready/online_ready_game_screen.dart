@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:handy_dandy_app/constants.dart';
-import 'package:handy_dandy_app/controllers/network_controller.dart';
 import 'package:handy_dandy_app/controllers/online_game_controller.dart';
+import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 import 'package:get/get.dart';
 
@@ -29,10 +30,26 @@ class OnlineReadyGameScreen extends StatelessWidget {
               children: [
                 !controller.hasInternetConnection.value
                     ? NoInternetBox()
-                    : SizedBox(
-                        height: 20,
+                    : Container(
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Text('تعداد افراد آنلاین'),
+                              Text(
+                                replacePersianNum(
+                                    controller.totalOnlinePlayers.toString()),
+                                style: TextStyle(
+                                    fontFamily: Fonts.Bold, fontSize: 18),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                Text(READY_DESC_ONLINE, textAlign: TextAlign.justify,),
+                Divider(),
+                Text(
+                  READY_DESC_ONLINE,
+                  textAlign: TextAlign.justify,
+                ),
                 Spacer(),
                 SvgPicture.asset(
                   'assets/coin.svg',
@@ -49,7 +66,9 @@ class OnlineReadyGameScreen extends StatelessWidget {
                   '۵۰',
                   style: TextStyle(fontFamily: Fonts.Bold, fontSize: 24),
                 ),
-                Spacer(flex: 2,),
+                Spacer(
+                  flex: 2,
+                ),
                 TextField(
                   controller: controller.aliasTextController,
                   textAlign: TextAlign.center,
@@ -63,7 +82,7 @@ class OnlineReadyGameScreen extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    controller.requestToJoin();
+                    if (!controller.isFinding.value) controller.requestToJoin();
                   },
                   child: Container(
                     padding: EdgeInsets.all(16),
@@ -72,25 +91,45 @@ class OnlineReadyGameScreen extends StatelessWidget {
                             ? primaryColor
                             : Colors.grey,
                         borderRadius: BorderRadius.circular(24)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'اتصال',
-                          style: TextStyle(
-                              fontFamily: Fonts.Bold,
-                              fontSize: 18,
-                              color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        FaIcon(
-                          FontAwesomeIcons.globe,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
+                    child: controller.isFinding.value
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'در حال جستجوی رقیب',
+                                style: TextStyle(
+                                    fontFamily: Fonts.Bold,
+                                    fontSize: 18,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              SpinKitCircle(
+                                color: Colors.white,
+                                size: 24,
+                              )
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'اتصال',
+                                style: TextStyle(
+                                    fontFamily: Fonts.Bold,
+                                    fontSize: 18,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              FaIcon(
+                                FontAwesomeIcons.globe,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
                   ),
                 ),
                 SizedBox(

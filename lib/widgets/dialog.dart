@@ -1,5 +1,6 @@
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -76,6 +77,36 @@ showUpdateDialog() {
               press: () {
                 Get.back();
               }),
+        ],
+      ));
+}
+
+showDisconnectRival({required VoidCallback onBack}) {
+  Get.defaultDialog(
+      title: 'قطع اتصال حریف',
+      titleStyle: TextStyle(color: primaryColor),
+      onWillPop: () async {
+        onBack();
+        return false;
+      },
+      content: Column(
+        children: [
+          Text(
+            'حریف شما از بازی خارج شد',
+            style: TextStyle(fontFamily: Fonts.Medium),
+          ),
+          SvgPicture.asset(
+            'assets/sad-face.svg',
+            width: 50,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          MyButton(
+              title: 'بازگشت',
+              bgColor: primaryColor,
+              titleColor: Colors.white,
+              press: onBack),
         ],
       ));
 }
