@@ -12,7 +12,7 @@ class LotteryController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  RxBool canTry = false.obs;
+  RxBool canTry = true.obs;
   RxBool canReturn = false.obs;
 
   @override
@@ -24,9 +24,7 @@ class LotteryController extends GetxController {
   _checkCanTryLottery() async {
     Box box = await Hive.openBox('db');
     var lastTryCache = box.get('last_try_lottery');
-    if (lastTryCache == null) {
-      canTry.value = true;
-    } else {
+    if (lastTryCache != null) {
       final lastDayTry = box.get('last_try_lottery') as int;
       final today = DateTime.now().day;
       if (today == lastDayTry) {
@@ -54,10 +52,9 @@ class LotteryController extends GetxController {
     canReturn.value = true;
     isLoading.value = false;
     // todo: add result to firebase
-    homeController.analytics
-        .logEvent(name: 'try_lottery', parameters: <String, dynamic>{
-          "score": resultScore.value
-        });
+    homeController.analytics.logEvent(
+        name: 'try_lottery',
+        parameters: <String, dynamic>{"score": resultScore.value});
     homeController.addLotteryScore(resultScore.value);
   }
 }

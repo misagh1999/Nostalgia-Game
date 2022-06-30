@@ -7,6 +7,8 @@ import 'package:handy_dandy_app/widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/widgets/rest_live_widget.dart';
 
+import 'components/online_box_widget.dart';
+
 class OnlineMainGameScreen extends StatelessWidget {
   OnlineMainGameScreen({Key? key}) : super(key: key);
 
@@ -31,7 +33,9 @@ class OnlineMainGameScreen extends StatelessWidget {
                     replacePersianNum(controller.restTurn.toString()),
                     style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
                   ),
-                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 12,
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -105,60 +109,11 @@ class OnlineMainGameScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (controller.canSelect.value ||
-                                controller.canGuess.value) {
-                              // todo
-                              controller.onClickBox(1);
-                            }
-                          },
-                          child: Container(
-                            height: Get.width / 2.5,
-                            decoration: BoxDecoration(
-                                color: controller.canSelect.value ||
-                                        controller.canGuess.value
-                                    ? secondaryColor
-                                    : Colors.grey,
-                                borderRadius: BorderRadius.circular(24)),
-                            child: Center(
-                                child: Text(
-                              'جعبه ۱',
-                              style: TextStyle(
-                                  fontFamily: Fonts.Black, fontSize: 20),
-                            )),
-                          ),
-                        ),
-                      ),
+                      OnlineBoxWidget(boxNumber: 1),
                       SizedBox(
                         width: 12,
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            if (controller.canSelect.value ||
-                                controller.canGuess.value) {
-                              controller.onClickBox(2);
-                            }
-                          },
-                          child: Container(
-                            height: Get.width / 2.5,
-                            decoration: BoxDecoration(
-                                color: controller.canSelect.value ||
-                                        controller.canGuess.value
-                                    ? secondaryColor
-                                    : Colors.grey,
-                                borderRadius: BorderRadius.circular(24)),
-                            child: Center(
-                                child: Text(
-                              'جعبه ۲',
-                              style: TextStyle(
-                                  fontFamily: Fonts.Black, fontSize: 20),
-                            )),
-                          ),
-                        ),
-                      ),
+                      OnlineBoxWidget(boxNumber: 2),
                     ],
                   ),
                   Spacer(
@@ -173,3 +128,5 @@ class OnlineMainGameScreen extends StatelessWidget {
     );
   }
 }
+
+

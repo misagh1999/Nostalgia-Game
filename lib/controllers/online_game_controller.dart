@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/controllers/network_controller.dart';
 import 'package:handy_dandy_app/data/enums/result_online_game.dart';
+import 'package:handy_dandy_app/data/my_cache.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
-import 'package:hive/hive.dart';
+import 'package:handy_dandy_app/utils/ui_utils.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
@@ -78,48 +79,6 @@ class OnlineGameController extends GetxController {
     return result.obs;
   }
 
-  _blinkYourColor(bool isTrue) async {
-    if (isTrue) {
-      yourColor.value = Colors.green;
-    } else {
-      yourColor.value = Colors.red;
-    }
-    await Future.delayed(Duration(milliseconds: 500));
-    yourColor.value = Colors.white;
-  }
-
-  _blinkRivalColor(bool isTrue) async {
-    //
-    if (isTrue) {
-      rivalColor.value = Colors.green;
-    } else {
-      rivalColor.value = Colors.red;
-    }
-    await Future.delayed(Duration(milliseconds: 500));
-    rivalColor.value = Colors.white;
-  }
-
-  RxString get resultMessage {
-    var result = "----";
-    if (!canGuess.value && !canSelect.value) {
-      if (isYourTurn.value) {
-        if (guessTrue.value) {
-          result = 'حدس شما درست بود';
-        } else {
-          result = 'حدس شما اشتباه بود';
-        }
-      } else {
-        if (guessTrue.value) {
-          result = 'حدس حریف‌تان درست بود';
-        } else {
-          result = 'حدس حریف‌تان اشتباه بود';
-        }
-      }
-    }
-
-    return result.obs;
-  }
-
   @override
   void onClose() {
     socket.disconnect();
@@ -175,17 +134,12 @@ class OnlineGameController extends GetxController {
     super.onInit();
   }
 
-  _readAliasFromCache() async {
-    Box box = await Hive.openBox('db');
-    var userAliasCache = box.get('user_alias');
-    if (userAliasCache != null) {
-      aliasTextController.text = userAliasCache as String;
-    }
+  _readAliasFromCache() {
+    MyCache.loadAlias(aliasTextController);
   }
 
   _cacheAlias(String alias) async {
-    Box box = await Hive.openBox('db');
-    box.put('user_alias', alias);
+    MyCache.cacheAlias(alias);
   }
 
   reConnectSocket() {
@@ -272,10 +226,10 @@ class OnlineGameController extends GetxController {
           if (selectedBox.value != rBoxNumber) {
             rivalLive.value = rivalLive.value - 1;
             guessTrue.value = false;
-            _blinkRivalColor(false);
+            blinkColor(rivalColor, false);
           } else {
             guessTrue.value = true;
-            _blinkRivalColor(true);
+            blinkColor(rivalColor, true);
           }
         }
 
@@ -302,7 +256,7 @@ class OnlineGameController extends GetxController {
     });
   }
 
-  onSelectBox(int box) {
+  _onSelectBox(int box) {
     socket.emit('onSelect', {
       "boxNumber": box.toString(),
       "senderId": yourId.value,
@@ -312,7 +266,7 @@ class OnlineGameController extends GetxController {
     selectedBox.value = box;
   }
 
-  onGuessBox(int box) {
+  _onGuessBox(int box) {
     socket.emit('onGuess', {
       "boxNumber": box.toString(),
       "senderId": yourId.value,
@@ -322,10 +276,10 @@ class OnlineGameController extends GetxController {
     if (box != selectedBox.value) {
       yourLive.value = yourLive.value - 1;
       guessTrue.value = false;
-      _blinkYourColor(false);
+      blinkColor(yourColor, false);
     } else {
       guessTrue.value = true;
-      _blinkYourColor(true);
+      blinkColor(yourColor, true);
     }
 
     isYourTurn.value = !isYourTurn.value;
@@ -345,26 +299,20 @@ class OnlineGameController extends GetxController {
     ResultGame result = ResultGame.equal;
     if (yourLive.value == 0 || rivalLive.value == 0) {
       if (yourLive.value == rivalLive.value) {
-        // no one win
         result = ResultGame.equal;
       } else if (yourLive.value == 0) {
-        // you lose
         result = ResultGame.lose;
       } else if (rivalLive.value == 0) {
-        // alias lost
         result = ResultGame.win;
       }
 
       _goToFinishScreen(result);
     } else if (restTurn.value == 0) {
       if (yourLive.value == rivalLive.value) {
-        // no one win
         result = ResultGame.equal;
       } else if (yourLive.value > rivalLive.value) {
-        // you win
         result = ResultGame.win;
       } else if (yourLive.value < rivalLive.value) {
-        // you lost
         result = ResultGame.lose;
       }
 
@@ -374,14 +322,14 @@ class OnlineGameController extends GetxController {
 
   _goToFinishScreen(ResultGame result) {
     var resultStatus = 'equal';
-    
+
     switch (result) {
       case ResultGame.lose:
         resultStatus = 'lose';
         homeController.subtractScore();
         break;
       case ResultGame.win:
-      resultStatus = 'win';
+        resultStatus = 'win';
         homeController.addScore();
         break;
       default:
@@ -399,12 +347,12 @@ class OnlineGameController extends GetxController {
 
   onClickBox(int box) {
     if (canSelect.value) {
-      onSelectBox(box);
+      _onSelectBox(box);
       canSelect.value = false;
     }
 
     if (canGuess.value) {
-      onGuessBox(box);
+      _onGuessBox(box);
       canGuess.value = false;
     }
   }
