@@ -10,6 +10,7 @@ import 'package:handy_dandy_app/utils/ui_utils.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
+import '../data/enums/fe_socket_events.dart';
 import '../widgets/dialog.dart';
 
 class OnlineGameController extends GetxController {
@@ -126,7 +127,7 @@ class OnlineGameController extends GetxController {
     socket.onConnect((_) {
       print('connected to websocket2');
 
-      socket.emit('onlinePlayers');
+      socket.emit(FeSocketEvents.ONLINE_PLAYERS);
     });
 
     _listenSockets();
@@ -147,7 +148,7 @@ class OnlineGameController extends GetxController {
   }
 
   _listenSockets() {
-    socket.on('canPlay', (data) {
+    socket.on(FeSocketEvents.CAN_PLAY, (data) {
       final message = data as Map<String, dynamic>;
       final player1 = message['player1'];
       final player2 = message['player2'];
@@ -183,7 +184,7 @@ class OnlineGameController extends GetxController {
       }
     });
 
-    socket.on('onSelect', (data) {
+    socket.on(FeSocketEvents.ON_SELECT, (data) {
       final Map<String, dynamic> message = data;
 
       final rBoxNumber = int.parse(message['boxNumber'] as String);
@@ -202,15 +203,14 @@ class OnlineGameController extends GetxController {
       }
     });
 
-    socket.on('onlinePlayers', (data) {
+    socket.on(FeSocketEvents.ONLINE_PLAYERS, (data) {
       final Map<String, dynamic> message = data;
 
       final totalNumbers = message['total'] as int;
       totalOnlinePlayers.value = totalNumbers;
-      print("total: " + totalNumbers.toString());
     });
 
-    socket.on('onGuess', (data) {
+    socket.on(FeSocketEvents.ON_GUESS, (data) {
       final Map<String, dynamic> message = data;
 
       final rBoxNumber = int.parse(message['boxNumber'] as String);
@@ -243,7 +243,7 @@ class OnlineGameController extends GetxController {
       }
     });
 
-    socket.on('onDisconnectRival', (data) async {
+    socket.on(FeSocketEvents.ON_DISCONNECT_RIVAL, (data) async {
       Get.back();
       Get.back();
       await Future.delayed(Duration(milliseconds: 500));
@@ -257,7 +257,7 @@ class OnlineGameController extends GetxController {
   }
 
   _onSelectBox(int box) {
-    socket.emit('onSelect', {
+    socket.emit(FeSocketEvents.ON_SELECT, {
       "boxNumber": box.toString(),
       "senderId": yourId.value,
       "recieverId": rivalId.value
@@ -267,7 +267,7 @@ class OnlineGameController extends GetxController {
   }
 
   _onGuessBox(int box) {
-    socket.emit('onGuess', {
+    socket.emit(FeSocketEvents.ON_GUESS, {
       "boxNumber": box.toString(),
       "senderId": yourId.value,
       "recieverId": rivalId.value
@@ -362,7 +362,8 @@ class OnlineGameController extends GetxController {
       if (aliasTextController.text.trim() != "") {
         yourAlias.value = aliasTextController.text.trim();
         _cacheAlias(yourAlias.value);
-        socket.emit('join', {"id": yourId.value, "alias": yourAlias.value});
+        socket.emit(FeSocketEvents.ON_JOIN,
+            {"id": yourId.value, "alias": yourAlias.value});
         isFinding.value = true;
         Future.delayed(Duration(seconds: 10), () {
           if (isFinding.value) {
