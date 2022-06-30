@@ -290,13 +290,8 @@ class OnlineGameController extends GetxController {
     });
 
     socket.on('onDisconnectRival', (data) async {
-      // todo: show dialog + return to main page
-      // Get.delete<OnlineGameController>();
-      // await Future.delayed(Duration(milliseconds: 250));
       Get.back();
       Get.back();
-      // await Future.delayed(Duration(milliseconds: 100));
-      // Get.toNamed(Routes.READY_ONLINE_GAME);
       await Future.delayed(Duration(milliseconds: 500));
       Get.snackbar('قطع اتصال حریف', 'رقیب شما از بازی خارج شد',
           snackPosition: SnackPosition.BOTTOM,
@@ -378,15 +373,27 @@ class OnlineGameController extends GetxController {
   }
 
   _goToFinishScreen(ResultGame result) {
+    var resultStatus = 'equal';
+    
     switch (result) {
       case ResultGame.lose:
+        resultStatus = 'lose';
         homeController.subtractScore();
         break;
       case ResultGame.win:
+      resultStatus = 'win';
         homeController.addScore();
         break;
       default:
     }
+
+    homeController.analytics
+        .logEvent(name: 'finish_online_game', parameters: <String, dynamic>{
+      "result": resultStatus,
+      "YourRival": rivalAlias.value,
+      "YourAlias": yourAlias.value,
+      "datetime": DateTime.now()
+    });
     Get.toNamed(Routes.FINISH_GAME, arguments: {"result": result});
   }
 
