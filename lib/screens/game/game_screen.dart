@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
-import 'package:handy_dandy_app/controllers/game_controller.dart';
+import 'package:handy_dandy_app/controllers/offline_fe_game_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
@@ -13,7 +13,7 @@ import 'components/box_widget.dart';
 class GameScreen extends StatelessWidget {
   GameScreen({Key? key}) : super(key: key);
 
-  final GameController controller = Get.find();
+  final OfflineFeGameController controller = Get.find();
   final HomeController homeController = Get.find();
 
   @override
@@ -122,7 +122,9 @@ class GameScreen extends StatelessWidget {
                                             fontSize: 18,
                                             color: Colors.white),
                                       ),
-                                      SizedBox(width: 6,),
+                                      SizedBox(
+                                        width: 6,
+                                      ),
                                       FaIcon(
                                         FontAwesomeIcons.rotateLeft,
                                         color: Colors.white,

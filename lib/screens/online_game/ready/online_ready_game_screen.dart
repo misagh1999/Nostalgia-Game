@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:handy_dandy_app/constants.dart';
-import 'package:handy_dandy_app/controllers/online_game_controller.dart';
+import 'package:handy_dandy_app/controllers/online_fe_game_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ import '../../../widgets/no_internet_box.dart';
 class OnlineReadyGameScreen extends StatelessWidget {
   OnlineReadyGameScreen({Key? key}) : super(key: key);
 
-  final OnlineGameController controller = Get.find();
+  final OnlineFeGameController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class OnlineReadyGameScreen extends StatelessWidget {
                       ),
                 Divider(),
                 Text(
-                  READY_DESC_ONLINE,
+                  READY_DESC_FE_ONLINE,
                   textAlign: TextAlign.justify,
                 ),
                 Spacer(),

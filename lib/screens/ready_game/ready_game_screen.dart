@@ -1,31 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
-import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
-import 'components/play_button_widget.dart';
 import 'components/score_type_button.dart';
 
 class ReadyGameScreen extends StatelessWidget {
   ReadyGameScreen({Key? key}) : super(key: key);
 
   final HomeController homeController = Get.find();
+  final GameController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildMyAppBar(title: 'توضیحات بازی'),
+      appBar: buildMyAppBar(title: controller.gameTitle.value),
       body: SafeArea(
         child: Obx(
           () => Container(
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
-                Text(READY_DESC, textAlign: TextAlign.justify,),
+                Row(
+                  children: [
+                    _buildOfflineOnlineToggle(
+                        title: 'آفلاین',
+                        isSelected: !controller.isOnlineMode.value,
+                        onPress: () {
+                          controller.setOfflineMode();
+                        }),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    _buildOfflineOnlineToggle(
+                        title: 'آنلاین',
+                        isSelected: controller.isOnlineMode.value,
+                        onPress: () {
+                          controller.setOnlineMode();
+                        }),
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  controller.gameDescription.value,
+                  textAlign: TextAlign.justify,
+                ),
                 SizedBox(
                   height: 36,
                 ),
@@ -35,8 +61,10 @@ class ReadyGameScreen extends StatelessWidget {
                     ScoreTypeButton(
                       score: '10',
                       isSelected: homeController.currentTypeIndex.value == 1,
+                      isEnabled: !controller.isOnlineMode.value,
                       press: () {
-                        homeController.select10Score();
+                        if (!controller.isOnlineMode.value)
+                          homeController.select10Score();
                       },
                     ),
                     SizedBox(
@@ -45,8 +73,10 @@ class ReadyGameScreen extends StatelessWidget {
                     ScoreTypeButton(
                       score: '25',
                       isSelected: homeController.currentTypeIndex.value == 2,
+                      isEnabled: !controller.isOnlineMode.value,
                       press: () {
-                        homeController.select25Score();
+                        if (!controller.isOnlineMode.value)
+                          homeController.select25Score();
                       },
                     ),
                     SizedBox(
@@ -74,20 +104,83 @@ class ReadyGameScreen extends StatelessWidget {
                   style: TextStyle(fontFamily: Fonts.Black, fontSize: 28),
                 ),
                 Spacer(),
-                PlayButtonWidget(
-                  press: () {
-                    if (homeController.totalScore.value >=
-                        homeController.currentTypeScore.value) {
-                      Get.toNamed(Routes.GAME);
-                    } else {
-                      Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
-                    }
-                  },
-                  isEnabled: homeController.totalScore.value >=
-                      homeController.currentTypeScore.value,
+                // PlayButtonWidget(
+                //   press: () {
+                //     if (homeController.totalScore.value >=
+                //         homeController.currentTypeScore.value) {
+                //       Get.toNamed(Routes.GAME);
+                //     } else {
+                //       Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
+                //     }
+                //   },
+                //   isEnabled: homeController.totalScore.value >=
+                //       homeController.currentTypeScore.value,
+                // ),
+                // Spacer(
+                //   flex: 2,
+                // )
+                TextField(
+                  controller: controller.aliasTextController,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: 'نام مستعار',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20))),
                 ),
-                Spacer(
-                  flex: 2,
+                SizedBox(
+                  height: 12,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (!controller.isFinding.value) controller.onPlayButton();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: controller.hasInternetConnection.value
+                            ? primaryColor
+                            : Colors.grey,
+                        borderRadius: BorderRadius.circular(24)),
+                    child: controller.isFinding.value
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'در حال جستجوی رقیب',
+                                style: TextStyle(
+                                    fontFamily: Fonts.Bold,
+                                    fontSize: 18,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              SpinKitCircle(
+                                color: Colors.white,
+                                size: 24,
+                              )
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'شروع',
+                                style: TextStyle(
+                                    fontFamily: Fonts.Bold,
+                                    fontSize: 18,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              FaIcon(
+                                FontAwesomeIcons.globe,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                  ),
                 )
               ],
             ),
@@ -95,5 +188,28 @@ class ReadyGameScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildOfflineOnlineToggle(
+      {required String title,
+      required bool isSelected,
+      required VoidCallback onPress}) {
+    return Expanded(
+        child: GestureDetector(
+      onTap: onPress,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: isSelected ? primaryColor : Colors.grey.withOpacity(0.1)),
+        child: Center(
+            child: Text(
+          title,
+          style: TextStyle(
+              fontFamily: Fonts.Bold,
+              color: isSelected ? Colors.white : primaryColor),
+        )),
+      ),
+    ));
   }
 }

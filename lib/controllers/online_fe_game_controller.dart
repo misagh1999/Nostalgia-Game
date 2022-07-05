@@ -13,7 +13,7 @@ import 'package:uuid/uuid.dart';
 import '../data/enums/fe_socket_events.dart';
 import '../widgets/dialog.dart';
 
-class OnlineGameController extends GetxController {
+class OnlineFeGameController extends GetxController {
   late Socket socket;
 
   TextEditingController aliasTextController = TextEditingController();
@@ -112,8 +112,8 @@ class OnlineGameController extends GetxController {
     yourId.value = uuid.v4();
 
     socket = io(
-      // 'ws://192.168.1.70:3000',
-      'https://hobby.misaghpour-dev.ir',
+      'ws://192.168.1.70:3000',
+      // 'https://hobby.misaghpour-dev.ir',
       OptionBuilder()
           .setTransports(['websocket']) // for Flutter or Dart VM
           .disableAutoConnect() // disable auto-connection
@@ -321,27 +321,17 @@ class OnlineGameController extends GetxController {
   }
 
   _goToFinishScreen(ResultGame result) {
-    var resultStatus = 'equal';
 
     switch (result) {
       case ResultGame.lose:
-        resultStatus = 'lose';
         homeController.subtractScore();
         break;
       case ResultGame.win:
-        resultStatus = 'win';
         homeController.addScore();
         break;
       default:
     }
 
-    homeController.analytics
-        .logEvent(name: 'finish_online_game', parameters: <String, dynamic>{
-      "result": resultStatus,
-      "YourRival": rivalAlias.value,
-      "YourAlias": yourAlias.value,
-      "datetime": DateTime.now()
-    });
     Get.toNamed(Routes.FINISH_GAME, arguments: {"result": result});
   }
 

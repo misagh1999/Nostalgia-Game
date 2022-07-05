@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
+import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
@@ -38,16 +39,34 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Spacer(),
-                HomeButtonWidget(
-                  title: 'شروع بازی',
-                  icon: FontAwesomeIcons.solidCirclePlay,
-                  color: primaryColor,
-                  press: () {
-                    controller.analytics
-                        .setCurrentScreen(screenName: 'Offline Game');
-                    Get.toNamed(Routes.READY_GAME);
-                  },
+                Row(
+                  children: [
+                    Spacer(),
+                    HomeButtonWidget(
+                      title: 'گل یا پوچ',
+                      icon: FontAwesomeIcons.solidCirclePlay,
+                      color: primaryColor,
+                      press: () {
+                        Get.toNamed(Routes.READY_GAME,
+                            arguments: {'game': MyGameType.fillEmpty});
+                      },
+                    ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    HomeButtonWidget(
+                      title: 'سنگ کاغذ قیچی',
+                      icon: FontAwesomeIcons.handFist,
+                      color: primaryColor,
+                      press: () {
+                        Get.toNamed(Routes.READY_GAME,
+                            arguments: {'game': MyGameType.handRock});
+                      },
+                    ),
+                    Spacer(),
+                  ],
                 ),
+
                 SizedBox(height: 12),
                 // todo:  ignored temp
                 HomeButtonWidget(

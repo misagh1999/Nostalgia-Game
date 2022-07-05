@@ -10,12 +10,14 @@ class ScoreTypeButton extends StatelessWidget {
       {Key? key,
       required this.score,
       required this.press,
+      this.isEnabled = true,
       required this.isSelected})
       : super(key: key);
 
   final VoidCallback press;
   final bool isSelected;
   final String score;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,22 @@ class ScoreTypeButton extends StatelessWidget {
             Container(
                 width: 30,
                 height: 30,
-                child: SvgPicture.asset('assets/coin.svg')),
+                child: isEnabled
+                    ? SvgPicture.asset(
+                        'assets/coin.svg',
+                      )
+                    : Opacity(
+                      opacity: 0.4,
+                      child: SvgPicture.asset(
+                          'assets/coin.svg',
+                        ),
+                    )),
             Text(
               replacePersianNum(score),
-              style: TextStyle(fontFamily: Fonts.Bold, fontSize: 24),
+              style: TextStyle(
+                  fontFamily: Fonts.Bold,
+                  fontSize: 24,
+                  color: isEnabled ? Colors.black : Colors.grey),
             ),
           ],
         )),
