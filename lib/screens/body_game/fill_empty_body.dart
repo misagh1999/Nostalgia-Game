@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/fill_empty_controller.dart';
 
 import '../../constants.dart';
-import '../online_game/main/components/online_box_widget.dart';
+import 'components/fill_empty_box_widget.dart';
 
 class FillEmptyBody extends StatelessWidget {
   FillEmptyBody({
@@ -41,11 +41,11 @@ class FillEmptyBody extends StatelessWidget {
           ),
           Row(
             children: [
-              OnlineBoxWidget(boxNumber: 1),
+              FillEmptyBoxWidget(boxNumber: 1),
               SizedBox(
                 width: 12,
               ),
-              OnlineBoxWidget(boxNumber: 2),
+              FillEmptyBoxWidget(boxNumber: 2),
             ],
           ),
         ],

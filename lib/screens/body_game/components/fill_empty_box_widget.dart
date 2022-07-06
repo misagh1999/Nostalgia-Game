@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:handy_dandy_app/controllers/fill_empty_controller.dart';
 
-import '../../../../constants.dart';
-// import '../../../../controllers/online_fe_game_controller.dart';
-import '../../../../utils/utils.dart';
+import '../../../constants.dart';
+import '../../../controllers/fill_empty_controller.dart';
+import '../../../utils/utils.dart';
 
-class OnlineBoxWidget extends StatelessWidget {
-  OnlineBoxWidget({
+class FillEmptyBoxWidget extends StatelessWidget {
+  FillEmptyBoxWidget({
     Key? key,
     required this.boxNumber,
   }) : super(key: key);

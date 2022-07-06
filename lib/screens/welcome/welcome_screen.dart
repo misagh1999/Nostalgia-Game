@@ -60,7 +60,6 @@ class WelcomeScreen extends StatelessWidget {
   }
 
   goToNextScreen() {
-    // Get.offAndToNamed(Routes.LOGIN);
     Get.offNamed(Routes.HOME);
   }
 }
