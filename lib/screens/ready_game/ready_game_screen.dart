@@ -32,7 +32,8 @@ class ReadyGameScreen extends StatelessWidget {
                         title: 'آفلاین',
                         isSelected: !controller.isOnlineMode.value,
                         onPress: () {
-                          controller.setOfflineMode();
+                          if (!controller.isFinding.value)
+                            controller.setOfflineMode();
                         }),
                     SizedBox(
                       width: 16,
@@ -41,19 +42,13 @@ class ReadyGameScreen extends StatelessWidget {
                         title: 'آنلاین',
                         isSelected: controller.isOnlineMode.value,
                         onPress: () {
-                          controller.setOnlineMode();
+                          if (!controller.isFinding.value)
+                            controller.setOnlineMode();
                         }),
                   ],
                 ),
                 SizedBox(
                   height: 12,
-                ),
-                Text(
-                  controller.gameDescription.value,
-                  textAlign: TextAlign.justify,
-                ),
-                SizedBox(
-                  height: 36,
                 ),
                 Spacer(),
                 Row(
@@ -104,21 +99,6 @@ class ReadyGameScreen extends StatelessWidget {
                   style: TextStyle(fontFamily: Fonts.Black, fontSize: 28),
                 ),
                 Spacer(),
-                // PlayButtonWidget(
-                //   press: () {
-                //     if (homeController.totalScore.value >=
-                //         homeController.currentTypeScore.value) {
-                //       Get.toNamed(Routes.GAME);
-                //     } else {
-                //       Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
-                //     }
-                //   },
-                //   isEnabled: homeController.totalScore.value >=
-                //       homeController.currentTypeScore.value,
-                // ),
-                // Spacer(
-                //   flex: 2,
-                // )
                 TextField(
                   controller: controller.aliasTextController,
                   textAlign: TextAlign.center,
@@ -137,7 +117,7 @@ class ReadyGameScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                        color: controller.hasInternetConnection.value
+                        color: controller.errorPlayGameStr.value.isEmpty
                             ? primaryColor
                             : Colors.grey,
                         borderRadius: BorderRadius.circular(24)),

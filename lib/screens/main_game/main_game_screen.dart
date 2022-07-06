@@ -18,47 +18,71 @@ class MainGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildMyAppBar(title: controller.gameTitle.value),
-      body: SafeArea(
-        child: Obx(
-          () => Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Text('نوبت باقی مانده'),
-                Text(
-                  replacePersianNum(controller.restTurn.toString()),
-                  style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    _buildPlayerStatus(
-                        alias: controller.yourAlias.value,
-                        live: controller.yourLive.value,
-                        color: controller.yourColor.value,
-                        isTurn: controller.isYourTurn.value),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    _buildPlayerStatus(
-                        alias: controller.rivalAlias.value,
-                        live: controller.rivalLive.value,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        color: controller.rivalColor.value,
-                        isTurn: controller.isRivalTurn.value),
-                  ],
-                ),
-                Spacer(),
-                controller.myGameType == MyGameType.fillEmpty
-                    ? FillEmptyBody()
-                    : controller.myGameType == MyGameType.handRock
-                        ? HandRockBody()
-                        : SizedBox(),
-                Spacer()
-              ],
+      body: WillPopScope(
+        onWillPop: () {
+          return controller.onWillPop();
+        },
+        child: SafeArea(
+          child: Obx(
+            () => Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text('نوبت باقی مانده'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        replacePersianNum(controller.restTurn.toString()),
+                        style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
+                      ),
+                      Spacer(),
+                      Text('امتیاز بازی'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        replacePersianNum(controller
+                            .homeController.currentTypeScore
+                            .toString()),
+                        style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Row(
+                    children: [
+                      _buildPlayerStatus(
+                          alias: controller.yourAlias.value,
+                          live: controller.yourLive.value,
+                          color: controller.yourColor.value,
+                          isTurn: controller.isYourTurn.value),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      _buildPlayerStatus(
+                          alias: controller.rivalAlias.value,
+                          live: controller.rivalLive.value,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          color: controller.rivalColor.value,
+                          isTurn: controller.isRivalTurn.value),
+                    ],
+                  ),
+                  Spacer(),
+                  controller.myGameType == MyGameType.fillEmpty
+                      ? FillEmptyBody()
+                      : controller.myGameType == MyGameType.handRock
+                          ? HandRockBody()
+                          : SizedBox(),
+                  Spacer()
+                ],
+              ),
             ),
           ),
         ),

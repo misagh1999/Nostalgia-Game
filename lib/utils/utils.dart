@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -12,6 +14,13 @@ String replacePersianNum(String input) {
   }
 
   return input;
+}
+
+randomNumber(int start, int finish) {
+  final startInt = start;
+  final endInt = finish;
+  Random random = Random();
+  return random.nextInt(endInt + 1 - startInt) + startInt;
 }
 
 getVersionNumber() async {

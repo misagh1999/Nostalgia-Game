@@ -9,7 +9,11 @@ import 'package:uuid/uuid.dart';
 import '../data/enums/fe_socket_events.dart';
 import '../data/my_cache.dart';
 import '../routes/app_pages.dart';
+import '../widgets/dialog.dart';
 import 'network_controller.dart';
+
+const ROBOT_ID = "99999999";
+const ROBOT_ALIAS = 'ربات';
 
 class GameController extends GetxController {
   RxString gameTitle = "بازی".obs;
@@ -33,6 +37,27 @@ class GameController extends GetxController {
   RxBool get hasInternetConnection {
     var result = false;
     result = networkController.connectionType.value != 0;
+    return result.obs;
+  }
+
+  RxString get errorPlayGameStr {
+    var result = "";
+
+    if (homeController.totalScore.value <
+        homeController.currentTypeScore.value) {
+      result = 'مجموع امتیاز شما برای بازی کافی نیست';
+    }
+
+    if (aliasTextController.text.trim() == "") {
+      result = 'نام مستعار خود را وارد کنید';
+    }
+
+    if (isOnlineMode.value) {
+      if (!hasInternetConnection.value) {
+        result = 'اتصال شما به اینترنت برقرار نیست';
+      }
+    }
+
     return result.obs;
   }
 
@@ -78,6 +103,26 @@ class GameController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    setOfflineMode();
+    super.onReady();
+  }
+
+  onWillPop() {
+    showMyDialog(
+        title: 'خروج از بازی',
+        message: 'آیا برای خروج اطمینان دارید؟',
+        onCancel: () {
+          Get.back();
+        },
+        onConfirm: () {
+          Get.back();
+          Get.back();
+          Get.back();
+        });
+  }
+
   reConnectSocket() {
     if (networkController.connectionType.value != 0) socket.connect();
   }
@@ -109,7 +154,6 @@ class GameController extends GetxController {
 
   _listenSocketEvents() {
     if (myGameType == MyGameType.fillEmpty) {
-      //
       socket.emit(FeSocketEvents.ONLINE_PLAYERS);
       _listenFillEmptyEvents();
     } else if (myGameType == MyGameType.handRock) {
@@ -159,6 +203,34 @@ class GameController extends GetxController {
     });
   }
 
+  _onPlayOfflineGame() {
+    final player1 = {'id': yourId.value, 'alias': yourAlias.value};
+    final player2 = {'id': ROBOT_ID, 'alias': ROBOT_ALIAS};
+
+    final player1Id = player1["id"] as String;
+    final player2Id = player2["id"] as String;
+
+    final player1Alias = player1["alias"] as String;
+    final player2Alias = player2["alias"] as String;
+
+    if (yourId.value == player1Id) {
+      isYourTurn.value = true;
+
+      rivalId.value = player2Id;
+      rivalAlias.value = player2Alias;
+    } else {
+      isYourTurn.value = false;
+
+      rivalId.value = player1Id;
+      rivalAlias.value = player1Alias;
+    }
+
+    isFinding.value = false;
+
+    Get.toNamed(Routes.MAIN_GAME,
+        arguments: {'player1': player1, 'player2': player2});
+  }
+
   _listenHandRockEvents() {
     //
   }
@@ -171,19 +243,11 @@ class GameController extends GetxController {
   }
 
   onPlayButton() {
-    if (homeController.totalScore.value >=
-        homeController.currentTypeScore.value) {
-      if (aliasTextController.text.trim() != "") {
-        yourAlias.value = aliasTextController.text.trim();
-        _cacheAlias(yourAlias.value);
+    if (errorPlayGameStr.value == "") {
+      yourAlias.value = aliasTextController.text.trim();
+      _cacheAlias(yourAlias.value);
 
-        if (myGameType == MyGameType.fillEmpty) {
-          socket.emit(FeSocketEvents.ON_JOIN,
-              {"id": yourId.value, "alias": yourAlias.value});
-        } else if (myGameType == MyGameType.handRock) {
-          // todo: socket another join
-        }
-
+      if (isOnlineMode.value) {
         isFinding.value = true;
         Future.delayed(Duration(seconds: 10), () {
           if (isFinding.value) {
@@ -191,11 +255,24 @@ class GameController extends GetxController {
             Fluttertoast.showToast(msg: 'حریفی پیدا نشد، مجدد تلاش کنید');
           }
         });
-      } else {
-        Fluttertoast.showToast(msg: 'نام مستعار خود را وارد کنید');
+      }
+
+      if (myGameType == MyGameType.fillEmpty) {
+        if (isOnlineMode.value) {
+          socket.emit(FeSocketEvents.ON_JOIN,
+              {"id": yourId.value, "alias": yourAlias.value});
+        } else {
+          _onPlayOfflineGame();
+        }
+      } else if (myGameType == MyGameType.handRock) {
+        if (isOnlineMode.value) {
+          // emit another socket
+        } else {
+          _onPlayOfflineGame();
+        }
       }
     } else {
-      Fluttertoast.showToast(msg: 'امتیاز شما مجاز نمی‌باشد');
+      Fluttertoast.showToast(msg: errorPlayGameStr.value);
     }
   }
 
