@@ -21,6 +21,8 @@ class GameController extends GetxController {
   RxBool isOnlineMode = false.obs;
   RxString gameDescription = "توضیحات این بازی که خوب است.".obs;
 
+  RxBool isFinishedGame = false.obs;
+
   final HomeController homeController = Get.find();
 
   TextEditingController aliasTextController = TextEditingController();
@@ -138,8 +140,8 @@ class GameController extends GetxController {
 
   _initSocketIo() {
     socket = io(
-      'ws://192.168.1.70:3000',
-      // 'https://hobby.misaghpour-dev.ir',
+      // 'ws://192.168.1.70:3000',
+      'https://hobby.misaghpour-dev.ir',
       OptionBuilder().setTransports(['websocket']).disableAutoConnect().build(),
     );
 

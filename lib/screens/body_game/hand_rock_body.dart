@@ -19,91 +19,29 @@ class HandRockBody extends StatelessWidget {
       () => Container(
         child: Column(
           children: [
-            // Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     Text(
-            //       controller.rivalStatusStr.value,
-            //       style: TextStyle(fontFamily: Fonts.Medium),
-            //     ),
-            //     SizedBox(
-            //       width: 4,
-            //     ),
-            //     controller.rivalStatus.value == RivalStatus.isSelecting
-            //         ? SpinKitCircle(
-            //             color: primaryColor,
-            //             size: 20,
-            //           )
-            //         : SizedBox()
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 16,
-            // ),
-            // Divider(),
             Row(
               children: [
                 Spacer(),
-                Column(
-                  children: [
-                    Text('گزینه شما'),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      width: Get.width / 4,
-                      height: Get.width / 4,
-                      decoration: BoxDecoration(
-                          color: controller.yourOptionColor.value,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: controller.yourStatus.value ==
-                                  RivalStatus.isSelecting
-                              ? SpinKitCircle(
-                                  color: primaryColor,
-                                  size: 36,
-                                )
-                              : FaIcon(
-                                  controller.yourOptionIcon.value,
-                                  size: Get.width / 6,
-                                )),
-                    )
-                  ],
-                ),
+                _buildSelectedOption(
+                    title: 'انتخاب شما',
+                    color: controller.yourOptionColor.value,
+                    icon: controller.yourOptionIcon.value,
+                    isSelecting:
+                        controller.yourStatus.value == RivalStatus.isSelecting),
                 Spacer(
                   flex: 2,
                 ),
-                Column(
-                  children: [
-                    Text('گزینه حریف'),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      width: Get.width / 4,
-                      height: Get.width / 4,
-                      decoration: BoxDecoration(
-                          color: controller.rivalOptionColor.value,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                          child: controller.rivalStatus.value ==
-                                  RivalStatus.isSelecting
-                              ? SpinKitCircle(
-                                  color: primaryColor,
-                                  size: 36,
-                                )
-                              : FaIcon(
-                                  controller.rivalOptionIcon.value,
-                                  size: Get.width / 6,
-                                )),
-                    )
-                  ],
-                ),
+                _buildSelectedOption(
+                    title: 'انتخاب حریف',
+                    color: controller.rivalOptionColor.value,
+                    icon: controller.rivalOptionIcon.value,
+                    isSelecting: controller.rivalStatus.value ==
+                        RivalStatus.isSelecting),
                 Spacer()
               ],
             ),
             SizedBox(
-              height: 12,
+              height: 16,
             ),
             Divider(),
             Text('گزینه خود را انتخاب کنید'),
@@ -112,20 +50,26 @@ class HandRockBody extends StatelessWidget {
             ),
             Row(
               children: [
-                _buildOptionsWidget(
+                _buildOnSelectOptionsWidget(
                     icon: FontAwesomeIcons.hand,
+                    isSelected:
+                        controller.yourOptionType.value == OptionType.hand,
                     onPress: () {
                       controller.onChooseButton(OptionType.hand);
                     }),
                 Spacer(),
-                _buildOptionsWidget(
+                _buildOnSelectOptionsWidget(
                     icon: FontAwesomeIcons.handScissors,
+                    isSelected:
+                        controller.yourOptionType.value == OptionType.scisors,
                     onPress: () {
                       controller.onChooseButton(OptionType.scisors);
                     }),
                 Spacer(),
-                _buildOptionsWidget(
+                _buildOnSelectOptionsWidget(
                     icon: FontAwesomeIcons.handBackFist,
+                    isSelected:
+                        controller.yourOptionType.value == OptionType.rock,
                     onPress: () {
                       controller.onChooseButton(OptionType.rock);
                     }),
@@ -137,8 +81,44 @@ class HandRockBody extends StatelessWidget {
     );
   }
 
-  Widget _buildOptionsWidget(
-      {required IconData icon, required VoidCallback onPress}) {
+  Column _buildSelectedOption(
+      {required String title,
+      required bool isSelecting,
+      required Color color,
+      required IconData icon}) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontFamily: Fonts.Medium),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Container(
+          width: Get.width / 4,
+          height: Get.width / 4,
+          decoration: BoxDecoration(
+              color: color, borderRadius: BorderRadius.circular(20)),
+          child: Center(
+              child: isSelecting
+                  ? SpinKitCircle(
+                      color: primaryColor,
+                      size: Get.width / 6,
+                    )
+                  : FaIcon(
+                      icon,
+                      size: Get.width / 6,
+                    )),
+        )
+      ],
+    );
+  }
+
+  Widget _buildOnSelectOptionsWidget(
+      {required IconData icon,
+      required VoidCallback onPress,
+      required bool isSelected}) {
     return GestureDetector(
       onTap: onPress,
       child: Container(
@@ -151,6 +131,11 @@ class HandRockBody extends StatelessWidget {
         child: Center(
             child: FaIcon(
           icon,
+          color: controller.yourStatus.value == RivalStatus.isSelecting
+              ? Colors.black
+              : isSelected
+                  ? primaryColor
+                  : Colors.grey,
           size: Get.width / 7,
         )),
       ),

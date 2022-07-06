@@ -20,6 +20,8 @@ class HandRockController extends GetxController {
 
   late Socket socket;
 
+  late RxBool isFinisedGame;
+
   late RxString yourId;
   late RxInt yourLive;
   late Rx<Color> yourColor;
@@ -103,6 +105,7 @@ class HandRockController extends GetxController {
   @override
   void onInit() {
     _initVariables();
+    isYourTurn.value = false;
     _retry();
     if (isOnlineMode.value) {
       socket = gController.socket;
@@ -122,11 +125,24 @@ class HandRockController extends GetxController {
       if (rSenderId == rivalId.value && rReciverId == yourId.value) {
         rivalStatus.value = RivalStatus.selected;
         rivalOptionType.value = _strToOptionType(optionStr);
-        print("yourRival: " + optionStr);
-      }
 
-      if (yourStatus.value == RivalStatus.selected) {
-        _checkResult();
+        if (yourStatus.value == RivalStatus.selected) {
+          _checkResult();
+        }
+      }
+    });
+
+    socket.on(HrSocketEvents.ON_DISCONNECT_RIVAL, (data) async {
+      if (!isFinisedGame.value) {
+        Get.back();
+        Get.back();
+        await Future.delayed(Duration(milliseconds: 500));
+        Get.snackbar('قطع اتصال حریف', 'رقیب شما از بازی خارج شد',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            padding: EdgeInsets.all(16),
+            duration: Duration(seconds: 4));
       }
     });
   }
@@ -144,25 +160,29 @@ class HandRockController extends GetxController {
     restTurn = gController.restTurn;
     isRivalTurn = gController.isRivalTurn;
 
+    isFinisedGame = gController.isFinishedGame;
+
     isOnlineMode = gController.isOnlineMode;
   }
 
   onChooseButton(OptionType optionType) {
-    yourStatus.value = RivalStatus.selected;
-    yourOptionType.value = optionType;
+    if (yourStatus.value == RivalStatus.isSelecting) {
+      yourStatus.value = RivalStatus.selected;
+      yourOptionType.value = optionType;
 
-    if (isOnlineMode.value) {
-      socket.emit(HrSocketEvents.ON_SELECT, {
-        'option': _optionTypeToStr(optionType),
-        'senderId': yourId.value,
-        'recieverId': rivalId.value
-      });
-    } else {
-      _selectRobot();
-    }
+      if (isOnlineMode.value) {
+        socket.emit(HrSocketEvents.ON_SELECT, {
+          'option': _optionTypeToStr(optionType),
+          'senderId': yourId.value,
+          'recieverId': rivalId.value
+        });
 
-    if (rivalStatus.value == RivalStatus.selected) {
-      _checkResult();
+        if (rivalStatus.value == RivalStatus.selected) {
+          _checkResult();
+        }
+      } else {
+        _selectRobot();
+      }
     }
   }
 
@@ -259,6 +279,7 @@ class HandRockController extends GetxController {
   }
 
   _goToFinishScreen(ResultGame result) {
+    isFinisedGame.value = true;
     switch (result) {
       case ResultGame.lose:
         homeController.subtractScore();
