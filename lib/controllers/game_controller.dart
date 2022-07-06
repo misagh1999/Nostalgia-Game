@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
+import 'package:handy_dandy_app/data/enums/hr_socket_events.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
@@ -157,7 +158,6 @@ class GameController extends GetxController {
       socket.emit(FeSocketEvents.ONLINE_PLAYERS);
       _listenFillEmptyEvents();
     } else if (myGameType == MyGameType.handRock) {
-      //
       _listenHandRockEvents();
     }
   }
@@ -232,7 +232,44 @@ class GameController extends GetxController {
   }
 
   _listenHandRockEvents() {
-    //
+    socket.on(HrSocketEvents.ONLINE_PLAYERS, (data) {
+      final Map<String, dynamic> message = data;
+
+      final totalNumbers = message['total'] as int;
+      totalOnlinePlayers.value = totalNumbers;
+    });
+
+    socket.on(HrSocketEvents.CAN_PLAY, (data) {
+      final message = data as Map<String, dynamic>;
+      final player1 = message['player1'];
+      final player2 = message['player2'];
+
+      if ((player1["id"] as String) == yourId.value ||
+          (player2["id"] as String) == yourId.value) {
+        final player1Id = player1["id"] as String;
+        final player2Id = player2["id"] as String;
+
+        final player1Alias = player1["alias"] as String;
+        final player2Alias = player2["alias"] as String;
+
+        if (yourId.value == player1Id) {
+          isYourTurn.value = true;
+
+          rivalId.value = player2Id;
+          rivalAlias.value = player2Alias;
+        } else {
+          isYourTurn.value = false;
+
+          rivalId.value = player1Id;
+          rivalAlias.value = player1Alias;
+        }
+
+        isFinding.value = false;
+
+        Get.toNamed(Routes.MAIN_GAME,
+            arguments: {'player1': player1, 'player2': player2});
+      }
+    });
   }
 
   @override
@@ -266,7 +303,8 @@ class GameController extends GetxController {
         }
       } else if (myGameType == MyGameType.handRock) {
         if (isOnlineMode.value) {
-          // emit another socket
+          socket.emit(HrSocketEvents.ON_JOIN,
+              {"id": yourId.value, "alias": yourAlias.value});
         } else {
           _onPlayOfflineGame();
         }

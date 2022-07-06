@@ -1,16 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/data/enums/hr_socket_events.dart';
 import 'package:handy_dandy_app/logic/hand_rock_rule.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
+import '../data/enums/result_online_game.dart';
+import '../routes/app_pages.dart';
+import '../utils/ui_utils.dart';
+import '../utils/utils.dart';
+import 'game_controller.dart';
+import 'home_controller.dart';
 
 class HandRockController extends GetxController {
   RxInt restTurn = 5.obs;
 
-  RxInt yourLive = 3.obs;
-  RxInt rivalLive = 3.obs;
+  final GameController gController = Get.find();
+  final HomeController homeController = Get.find();
+
+  late Socket socket;
+
+  late RxString yourId;
+  late RxInt yourLive;
+  late Rx<Color> yourColor;
+
+  late RxString rivalId;
+  late RxString rivalAlias;
+  late RxInt rivalLive;
+  late Rx<Color> rivalColor;
+
+  late RxBool isRivalTurn;
+  late RxBool isYourTurn;
+
+  late RxBool isOnlineMode;
+
+  Rx<Color> yourOptionColor = Colors.grey.withOpacity(0.2).obs;
+  Rx<Color> rivalOptionColor = Colors.grey.withOpacity(0.2).obs;
+
+  _restOptionColors() {
+    yourOptionColor.value = Colors.grey.withOpacity(0.2);
+    rivalOptionColor.value = Colors.grey.withOpacity(0.2);
+  }
 
   Rx<RivalStatus> rivalStatus = RivalStatus.idle.obs;
+  Rx<RivalStatus> yourStatus = RivalStatus.idle.obs;
 
   Rx<OptionType> yourOptionType = OptionType.nothing.obs;
   Rx<OptionType> rivalOptionType = OptionType.nothing.obs;
+
+  Rx<IconData> get yourOptionIcon {
+    var result = FontAwesomeIcons.a;
+
+    switch (yourOptionType.value) {
+      case OptionType.hand:
+        result = FontAwesomeIcons.hand;
+        break;
+      case OptionType.scisors:
+        result = FontAwesomeIcons.handScissors;
+        break;
+      case OptionType.rock:
+        result = FontAwesomeIcons.handBackFist;
+        break;
+      default:
+    }
+
+    return result.obs;
+  }
+
+  Rx<IconData> get rivalOptionIcon {
+    var result = FontAwesomeIcons.a;
+
+    switch (rivalOptionType.value) {
+      case OptionType.hand:
+        result = FontAwesomeIcons.hand;
+        break;
+      case OptionType.scisors:
+        result = FontAwesomeIcons.handScissors;
+        break;
+      case OptionType.rock:
+        result = FontAwesomeIcons.handBackFist;
+        break;
+      default:
+    }
+
+    if (yourStatus.value == RivalStatus.isSelecting) {
+      result = FontAwesomeIcons.question;
+    }
+
+    return result.obs;
+  }
 
   RxString get rivalStatusStr {
     var result = "";
@@ -24,28 +102,99 @@ class HandRockController extends GetxController {
 
   @override
   void onInit() {
+    _initVariables();
     _retry();
+    if (isOnlineMode.value) {
+      socket = gController.socket;
+      _listenSockets();
+    }
     super.onInit();
   }
 
+  _listenSockets() {
+    socket.on(HrSocketEvents.ON_SELECT, (data) {
+      final Map<String, dynamic> message = data;
+
+      final optionStr = message['option'] as String;
+      final rSenderId = message['senderId'] as String;
+      final rReciverId = message['recieverId'] as String;
+
+      if (rSenderId == rivalId.value && rReciverId == yourId.value) {
+        rivalStatus.value = RivalStatus.selected;
+        rivalOptionType.value = _strToOptionType(optionStr);
+        print("yourRival: " + optionStr);
+      }
+
+      if (yourStatus.value == RivalStatus.selected) {
+        _checkResult();
+      }
+    });
+  }
+
+  _initVariables() {
+    yourId = gController.yourId;
+    yourLive = gController.yourLive;
+    yourColor = gController.yourColor;
+    isYourTurn = gController.isYourTurn;
+
+    rivalId = gController.rivalId;
+    rivalAlias = gController.rivalAlias;
+    rivalLive = gController.rivalLive;
+    rivalColor = gController.rivalColor;
+    restTurn = gController.restTurn;
+    isRivalTurn = gController.isRivalTurn;
+
+    isOnlineMode = gController.isOnlineMode;
+  }
+
   onChooseButton(OptionType optionType) {
+    yourStatus.value = RivalStatus.selected;
     yourOptionType.value = optionType;
+
+    if (isOnlineMode.value) {
+      socket.emit(HrSocketEvents.ON_SELECT, {
+        'option': _optionTypeToStr(optionType),
+        'senderId': yourId.value,
+        'recieverId': rivalId.value
+      });
+    } else {
+      _selectRobot();
+    }
+
     if (rivalStatus.value == RivalStatus.selected) {
-      // todo:
+      _checkResult();
     }
   }
 
-  _selectMachine() {
-    // select machine
+  _selectRobot() async {
+    await Future.delayed(Duration(seconds: 2));
+    final guessNumber = randomNumber(1, 3);
+    rivalStatus.value = RivalStatus.selected;
+    var optionType = OptionType.nothing;
+    switch (guessNumber) {
+      case 1:
+        optionType = OptionType.hand;
+        break;
+      case 2:
+        optionType = OptionType.rock;
+        break;
+      case 3:
+        optionType = OptionType.scisors;
+        break;
+      default:
+    }
+    rivalOptionType.value = optionType;
+
+    _checkResult();
   }
 
   _retry() {
-    yourOptionType.value = OptionType.nothing;
-    rivalOptionType.value = OptionType.nothing;
-    rivalStatus.value = RivalStatus.idle;
+    _restOptionColors();
+    rivalStatus.value = RivalStatus.isSelecting;
+    yourStatus.value = RivalStatus.isSelecting;
   }
 
-  _checkResult() {
+  _checkResult() async {
     var yourOptionStr = _optionTypeToStr(yourOptionType.value);
     var rivalOptionStr = _optionTypeToStr(rivalOptionType.value);
 
@@ -61,12 +210,66 @@ class HandRockController extends GetxController {
     }
     if (!isYouWin) {
       yourLive.value = yourLive.value - 1;
-    }
-    if (!isRivalWin) {
-      rivalLive.value = rivalLive.value - 1;
+      blinkColor(yourColor, false);
+      yourOptionColor.value = Colors.red;
+    } else {
+      yourOptionColor.value = Colors.green;
     }
 
-    // check if zero or finish restTurn
+    if (!isRivalWin) {
+      rivalLive.value = rivalLive.value - 1;
+      blinkColor(rivalColor, false);
+      rivalOptionColor.value = Colors.red;
+    } else {
+      rivalOptionColor.value = Colors.green;
+    }
+
+    restTurn.value = restTurn.value - 1;
+
+    await Future.delayed(Duration(seconds: 2));
+
+    _retry();
+
+    _checkFinishGame();
+  }
+
+  _checkFinishGame() {
+    ResultGame result = ResultGame.equal;
+    if (yourLive.value == 0 || rivalLive.value == 0) {
+      if (yourLive.value == rivalLive.value) {
+        result = ResultGame.equal;
+      } else if (yourLive.value == 0) {
+        result = ResultGame.lose;
+      } else if (rivalLive.value == 0) {
+        result = ResultGame.win;
+      }
+
+      _goToFinishScreen(result);
+    } else if (restTurn.value == 0) {
+      if (yourLive.value == rivalLive.value) {
+        result = ResultGame.equal;
+      } else if (yourLive.value > rivalLive.value) {
+        result = ResultGame.win;
+      } else if (yourLive.value < rivalLive.value) {
+        result = ResultGame.lose;
+      }
+
+      _goToFinishScreen(result);
+    }
+  }
+
+  _goToFinishScreen(ResultGame result) {
+    switch (result) {
+      case ResultGame.lose:
+        homeController.subtractScore();
+        break;
+      case ResultGame.win:
+        homeController.addScore();
+        break;
+      default:
+    }
+
+    Get.toNamed(Routes.FINISH_GAME, arguments: {"result": result});
   }
 
   _optionTypeToStr(OptionType optionType) {
@@ -84,6 +287,23 @@ class HandRockController extends GetxController {
       default:
     }
     return result;
+  }
+
+  _strToOptionType(String optionStr) {
+    var optionType = OptionType.nothing;
+    switch (optionStr) {
+      case PAPER:
+        optionType = OptionType.hand;
+        break;
+      case SCISSORS:
+        optionType = OptionType.scisors;
+        break;
+      case ROCK:
+        optionType = OptionType.rock;
+        break;
+      default:
+    }
+    return optionType;
   }
 }
 

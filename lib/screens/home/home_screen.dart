@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                     Spacer(),
                     HomeButtonWidget(
                       title: 'گل یا پوچ',
-                      icon: FontAwesomeIcons.solidCirclePlay,
+                      icon: FontAwesomeIcons.handBackFist,
                       color: primaryColor,
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
@@ -56,8 +56,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     HomeButtonWidget(
                       title: 'سنگ کاغذ قیچی',
-                      icon: FontAwesomeIcons.handFist,
-                      color: primaryColor,
+                      icon: FontAwesomeIcons.handScissors,
+                      color: secondaryColor,
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
                             arguments: {'game': MyGameType.handRock});
@@ -66,19 +66,7 @@ class HomeScreen extends StatelessWidget {
                     Spacer(),
                   ],
                 ),
-
                 SizedBox(height: 12),
-                // todo:  ignored temp
-                HomeButtonWidget(
-                  title: 'بازی آنلاین',
-                  icon: FontAwesomeIcons.solidCirclePlay,
-                  color: secondaryColor,
-                  press: () {
-                    controller.analytics
-                        .setCurrentScreen(screenName: 'Online Game');
-                    Get.toNamed(Routes.READY_ONLINE_GAME);
-                  },
-                ),
                 Spacer(),
                 GestureDetector(
                   onTap: () {
