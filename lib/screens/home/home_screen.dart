@@ -71,10 +71,11 @@ class HomeScreen extends StatelessWidget {
                 Spacer(
                   flex: 2,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Get.toNamed(Routes.DAILY_LOTTERY);
                   },
+                  borderRadius: BorderRadius.circular(20),
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(

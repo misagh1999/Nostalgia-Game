@@ -22,20 +22,17 @@ class ScoreTypeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: GestureDetector(
+        child: InkWell(
       onTap: press,
+      borderRadius: BorderRadius.circular(24),
       child: Container(
         width: Get.width / 4,
         height: Get.width / 4,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            border: isSelected
-                ? Border.all(
-                    width: 3,
-                    color: primaryColor
-                  )
-                : null,
+            border:
+                isSelected ? Border.all(width: 3, color: primaryColor) : null,
             color: Colors.grey.withOpacity(0.1)),
         child: Center(
             child: Column(

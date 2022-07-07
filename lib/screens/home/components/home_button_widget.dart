@@ -19,35 +19,43 @@ class HomeButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: press,
-      child: Container(
-        width: Get.width / 2.5,
-        height: Get.width / 2.5,
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
+    return Container(
+      decoration: BoxDecoration(
+        color: this.color,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: press,
           borderRadius: BorderRadius.circular(24),
-          color: this.color,
+          child: Container(
+            width: Get.width / 2.5,
+            height: Get.width / 2.5,
+            padding: EdgeInsets.all(12),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FaIcon(
+                  icon,
+                  color: Colors.white,
+                  size: 40,
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: Fonts.Bold,
+                      fontSize: 20),
+                ),
+              ],
+            )),
+          ),
         ),
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FaIcon(
-              icon,
-              color: Colors.white,
-              size: 40,
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  color: Colors.white, fontFamily: Fonts.Bold, fontSize: 20),
-            ),
-          ],
-        )),
       ),
     );
   }

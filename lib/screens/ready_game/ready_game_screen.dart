@@ -111,60 +111,70 @@ class ReadyGameScreen extends StatelessWidget {
                 SizedBox(
                   height: 12,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (!controller.isFinding.value) controller.onPlayButton();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: controller.errorPlayGameStr.value.isEmpty
-                            ? primaryColor
-                            : Colors.grey,
-                        borderRadius: BorderRadius.circular(24)),
-                    child: controller.isFinding.value
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'در حال جستجوی رقیب',
-                                style: TextStyle(
-                                    fontFamily: Fonts.Bold,
-                                    fontSize: 18,
-                                    color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              SpinKitCircle(
-                                color: Colors.white,
-                                size: 24,
-                              )
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'شروع',
-                                style: TextStyle(
-                                    fontFamily: Fonts.Bold,
-                                    fontSize: 18,
-                                    color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              FaIcon(
-                                FontAwesomeIcons.play,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                  ),
-                )
+                _buildPlayButton()
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayButton() {
+    return Container(
+      decoration: BoxDecoration(
+          color: controller.errorPlayGameStr.value.isEmpty
+              ? primaryColor
+              : Colors.grey,
+          borderRadius: BorderRadius.circular(24)),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            if (!controller.isFinding.value) controller.onPlayButton();
+          },
+          borderRadius: BorderRadius.circular(24),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: controller.isFinding.value
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'در حال جستجوی رقیب',
+                        style: TextStyle(
+                            fontFamily: Fonts.Bold,
+                            fontSize: 18,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      SpinKitCircle(
+                        color: Colors.white,
+                        size: 24,
+                      )
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'شروع',
+                        style: TextStyle(
+                            fontFamily: Fonts.Bold,
+                            fontSize: 18,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      FaIcon(
+                        FontAwesomeIcons.play,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
           ),
         ),
       ),
@@ -176,20 +186,26 @@ class ReadyGameScreen extends StatelessWidget {
       required bool isSelected,
       required VoidCallback onPress}) {
     return Expanded(
-        child: GestureDetector(
-      onTap: onPress,
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: isSelected ? primaryColor : Colors.grey.withOpacity(0.1)),
-        child: Center(
-            child: Text(
-          title,
-          style: TextStyle(
-              fontFamily: Fonts.Bold,
-              color: isSelected ? Colors.white : primaryColor),
-        )),
+        child: Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: isSelected ? primaryColor : Colors.grey.withOpacity(0.1)),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPress,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: EdgeInsets.all(12),
+            child: Center(
+                child: Text(
+              title,
+              style: TextStyle(
+                  fontFamily: Fonts.Bold,
+                  color: isSelected ? Colors.white : primaryColor),
+            )),
+          ),
+        ),
       ),
     ));
   }
