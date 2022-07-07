@@ -73,17 +73,22 @@ class DailyLotteryScreen extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SvgPicture.asset(
-            'assets/images/sad-face.svg',
-            width: Get.width / 3.5,
-            color: Colors.red,
+          FaIcon(
+            FontAwesomeIcons.faceFrown,
+            size: Get.width / 4,
+            color: Colors.deepOrange[700],
           ),
           SizedBox(
             height: 16,
           ),
           Text(
             'شما شانس امروز خود را امتحان کرده‌اید',
-            style: TextStyle(fontFamily: Fonts.Medium),
+            style: TextStyle(
+              fontFamily: Fonts.Medium,
+            ),
+          ),
+          SizedBox(
+            height: 4,
           ),
           Text('برای شانس مجدد، فردا امتحان کنید'),
         ],
@@ -100,10 +105,22 @@ class DailyLotteryScreen extends StatelessWidget {
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
             color: primaryColor, borderRadius: BorderRadius.circular(20)),
-        child: Text(
-          'بچرخون',
-          style: TextStyle(
-              fontFamily: Fonts.Bold, fontSize: 20, color: Colors.white),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'امتحان کن',
+              style: TextStyle(
+                  fontFamily: Fonts.Bold, fontSize: 20, color: Colors.white),
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            FaIcon(
+              FontAwesomeIcons.dice,
+              color: Colors.white,
+            )
+          ],
         ),
       ),
     );

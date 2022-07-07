@@ -38,7 +38,9 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Spacer(),
+                Spacer(
+                  flex: 2,
+                ),
                 Row(
                   children: [
                     Spacer(),
@@ -66,8 +68,9 @@ class HomeScreen extends StatelessWidget {
                     Spacer(),
                   ],
                 ),
-                SizedBox(height: 12),
-                Spacer(),
+                Spacer(
+                  flex: 2,
+                ),
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.DAILY_LOTTERY);
@@ -76,22 +79,25 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(width: 3, color: primaryColor)),
-                    child: Row(
+                        border: Border.all(width: 2, color: primaryColor)),
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('قرعه کشی روزانه'),
-                        SizedBox(
-                          width: 4,
-                        ),
                         SvgPicture.asset(
                           'assets/lottery.svg',
-                          width: 36,
-                        )
+                          width: 48,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'قرعه کشی روزانه',
+                          style:
+                              TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
+                        ),
                       ],
                     ),
                   ),
                 ),
+                Spacer()
               ],
             )),
           ),
