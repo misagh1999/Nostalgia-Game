@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 final primaryColor = Colors.teal;
 final secondaryColor = Colors.amber;
 
+final lightGreyColor = Colors.grey[50];
+
 var primaryGradint =
     LinearGradient(colors: [primaryColor.withOpacity(0.8), primaryColor]);
 

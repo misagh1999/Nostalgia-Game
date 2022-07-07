@@ -65,14 +65,14 @@ class GameController extends GetxController {
   }
 
   RxBool isYourTurn = false.obs;
-  Rx<Color> yourColor = Colors.grey.withOpacity(0.2).obs;
+  Rx<Color> yourColor = lightGreyColor!.obs;
   RxString yourAlias = "شما".obs;
   RxInt yourLive = 3.obs;
 
   RxString yourId = "".obs;
 
   RxBool isRivalTurn = false.obs;
-  Rx<Color> rivalColor = Colors.grey.withOpacity(0.2).obs;
+  Rx<Color> rivalColor = lightGreyColor!.obs;
   RxString rivalAlias = "حریف".obs;
   RxInt rivalLive = 3.obs;
   RxString rivalId = "".obs;
