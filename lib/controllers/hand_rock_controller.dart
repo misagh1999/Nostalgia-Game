@@ -36,12 +36,12 @@ class HandRockController extends GetxController {
 
   late RxBool isOnlineMode;
 
-  Rx<Color> yourOptionColor = Colors.grey.withOpacity(0.2).obs;
-  Rx<Color> rivalOptionColor = Colors.grey.withOpacity(0.2).obs;
+  Rx<Color> yourOptionColor = Colors.white.obs;
+  Rx<Color> rivalOptionColor = Colors.white.obs;
 
   _restOptionColors() {
-    yourOptionColor.value = Colors.grey.withOpacity(0.2);
-    rivalOptionColor.value = Colors.grey.withOpacity(0.2);
+    yourOptionColor.value = Colors.white;
+    rivalOptionColor.value = Colors.white;
   }
 
   Rx<RivalStatus> rivalStatus = RivalStatus.idle.obs;

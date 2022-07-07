@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
@@ -16,27 +17,39 @@ class FillEmptyBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Obx(
-        () => GestureDetector(
-          onTap: () {
-            if (controller.canSelect.value || controller.canGuess.value) {
-              controller.onClickBox(boxNumber);
-            }
-          },
-          child: Container(
-            height: Get.width / 2.5,
-            decoration: BoxDecoration(
-                color: controller.canSelect.value || controller.canGuess.value
-                    ? secondaryColor
-                    : Colors.grey,
-                borderRadius: BorderRadius.circular(24)),
-            child: Center(
-                child: Text(
-              replacePersianNum('جعبه ' + boxNumber.toString()),
-              style: TextStyle(fontFamily: Fonts.Black, fontSize: 20),
-            )),
-          ),
+    return Obx(
+      () => GestureDetector(
+        onTap: () {
+          if (controller.canSelect.value || controller.canGuess.value) {
+            controller.onClickBox(boxNumber);
+          }
+        },
+        child: Container(
+          height: Get.width / 2.75,
+          width: Get.width / 2.75,
+          decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(24)),
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FaIcon(FontAwesomeIcons.box,
+                  size: Get.width / 4,
+                  color: boxNumber == 1
+                      ? controller.box1Color.value
+                      : controller.box2Color.value),
+              Text(
+                replacePersianNum('جعبه ' + boxNumber.toString()),
+                style: TextStyle(
+                    fontFamily: Fonts.Black,
+                    fontSize: 20,
+                    color: boxNumber == 1
+                        ? controller.box1Color.value
+                        : controller.box2Color.value),
+              ),
+            ],
+          )),
         ),
       ),
     );

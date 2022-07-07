@@ -41,11 +41,11 @@ class FillEmptyBody extends StatelessWidget {
           ),
           Row(
             children: [
+              Spacer(),
               FillEmptyBoxWidget(boxNumber: 1),
-              SizedBox(
-                width: 12,
-              ),
+              Spacer(),
               FillEmptyBoxWidget(boxNumber: 2),
+              Spacer()
             ],
           ),
         ],

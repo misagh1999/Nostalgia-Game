@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
@@ -25,6 +26,8 @@ class FillEmptyController extends GetxController {
 
   RxBool guessTrue = false.obs;
 
+  RxBool isYouSelected = false.obs;
+
   late RxInt restTurn;
 
   final GameController gController = Get.find();
@@ -38,6 +41,40 @@ class FillEmptyController extends GetxController {
   late RxString rivalAlias;
   late RxInt rivalLive;
   late Rx<Color> rivalColor;
+
+  Rx<Color> get box1Color {
+    var result = primaryColor;
+    if (isYouSelected.value) {
+      if (selectedBox.value == 1) {
+        result = primaryColor;
+      } else if (selectedBox.value == 2) {
+        result = Colors.grey;
+      }
+    }
+
+    if (isSelectingRival.value && !isYourTurn.value) {
+      result = Colors.grey;
+    }
+
+    return result.obs;
+  }
+
+  Rx<Color> get box2Color {
+    var result = primaryColor;
+    if (isYouSelected.value) {
+      if (selectedBox.value == 2) {
+        result = primaryColor;
+      } else if (selectedBox == 1) {
+        result = Colors.grey;
+      }
+    }
+
+    if (isSelectingRival.value && !isYourTurn.value) {
+      result = Colors.grey;
+    }
+
+    return result.obs;
+  }
 
   RxBool isSelectingRival = false.obs;
 
@@ -156,6 +193,8 @@ class FillEmptyController extends GetxController {
           canSelect.value = false;
           canGuess.value = false;
         }
+
+        isYouSelected.value = false;
       }
     });
 
@@ -183,6 +222,8 @@ class FillEmptyController extends GetxController {
             blinkColor(rivalColor, true);
           }
         }
+
+        isYouSelected.value = false;
 
         if (turnIndex.value == 1) {
           turnIndex.value = 2;
@@ -220,6 +261,8 @@ class FillEmptyController extends GetxController {
   }
 
   _onSelectBox(int box) {
+    isYouSelected.value = true;
+
     if (isOnlineMode.value) {
       socket.emit(FeSocketEvents.ON_SELECT, {
         "boxNumber": box.toString(),
@@ -267,6 +310,8 @@ class FillEmptyController extends GetxController {
       }
     }
 
+    isYouSelected.value = false;
+
     _selectRobot();
 
     if (turnIndex.value == 1) {
@@ -278,7 +323,7 @@ class FillEmptyController extends GetxController {
     }
   }
 
-  _onGuessBox(int box) {
+  _onGuessBox(int box) async {
     if (isOnlineMode.value) {
       socket.emit(FeSocketEvents.ON_GUESS, {
         "boxNumber": box.toString(),

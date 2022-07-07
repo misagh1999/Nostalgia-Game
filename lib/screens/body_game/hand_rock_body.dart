@@ -99,7 +99,9 @@ class HandRockBody extends StatelessWidget {
           width: Get.width / 4,
           height: Get.width / 4,
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(20)),
+              color: color,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(width: 2, color: primaryColor)),
           child: Center(
               child: isSelecting
                   ? SpinKitCircle(
@@ -126,7 +128,12 @@ class HandRockBody extends StatelessWidget {
         height: Get.width / 4,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey[100],
+            border: controller.yourStatus.value == RivalStatus.isSelecting
+                ? null
+                : isSelected
+                    ? Border.all(width: 3, color: primaryColor)
+                    : null,
             borderRadius: BorderRadius.circular(20)),
         child: Center(
             child: FaIcon(
