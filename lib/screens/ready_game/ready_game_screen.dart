@@ -89,6 +89,7 @@ class ReadyGameScreen extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
+                Divider(),
                 Text(
                   'امتیاز این بازی',
                   style: TextStyle(
@@ -155,7 +156,7 @@ class ReadyGameScreen extends StatelessWidget {
                                 width: 8,
                               ),
                               FaIcon(
-                                FontAwesomeIcons.globe,
+                                FontAwesomeIcons.play,
                                 color: Colors.white,
                               ),
                             ],

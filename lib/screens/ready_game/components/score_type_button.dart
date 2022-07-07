@@ -30,9 +30,12 @@ class ScoreTypeButton extends StatelessWidget {
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              width: isSelected ? 3 : 0,
-            ),
+            border: isSelected
+                ? Border.all(
+                    width: 3,
+                    color: primaryColor
+                  )
+                : null,
             color: Colors.grey.withOpacity(0.1)),
         child: Center(
             child: Column(
@@ -46,11 +49,11 @@ class ScoreTypeButton extends StatelessWidget {
                         'assets/coin.svg',
                       )
                     : Opacity(
-                      opacity: 0.4,
-                      child: SvgPicture.asset(
+                        opacity: 0.4,
+                        child: SvgPicture.asset(
                           'assets/coin.svg',
                         ),
-                    )),
+                      )),
             Text(
               replacePersianNum(score),
               style: TextStyle(
