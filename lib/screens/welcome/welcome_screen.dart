@@ -46,7 +46,7 @@ class WelcomeScreen extends StatelessWidget {
               future: getVersionNumber(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text("v " + (snapshot.data as String),
+                  return Text("نسخه " + (snapshot.data as String),
                       style: TextStyle(
                         color: Colors.grey,
                       ));

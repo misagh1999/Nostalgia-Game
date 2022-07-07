@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-final primaryColor = Colors.purple;
-final secondaryColor = Colors.orange;
+final primaryColor = Colors.teal;
+final secondaryColor = Colors.amber;
 
 var primaryGradint =
     LinearGradient(colors: [primaryColor.withOpacity(0.8), primaryColor]);
