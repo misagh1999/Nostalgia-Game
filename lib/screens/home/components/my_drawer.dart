@@ -42,13 +42,10 @@ Drawer buildMyDrawer() {
                     ),
                     Spacer(),
                     SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: FaIcon(
-                          FontAwesomeIcons.handBackFist,
-                          color: Colors.white,
-                          size: 50,
-                        )),
+                      width: 60,
+                      height: 60,
+                      child: Image.asset('assets/images/logo_white.png'),
+                    ),
                   ],
                 ),
                 Spacer(),

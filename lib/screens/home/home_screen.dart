@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     showUpdateDialogIfAvailable();
     return Scaffold(
-      appBar: buildMyAppBar(title: 'گل یا پوچ'),
+      appBar: buildMyAppBar(title: 'نوستالیژی پلی'),
       drawer: buildMyDrawer(),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
@@ -46,8 +46,7 @@ class HomeScreen extends StatelessWidget {
                     Spacer(),
                     HomeButtonWidget(
                       title: 'گل یا پوچ',
-                      icon: FontAwesomeIcons.handBackFist,
-                      color: primaryColor,
+                      imagePath: 'assets/images/fill_empty.png',
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
                             arguments: {'game': MyGameType.fillEmpty});
@@ -58,11 +57,48 @@ class HomeScreen extends StatelessWidget {
                     ),
                     HomeButtonWidget(
                       title: 'سنگ کاغذ قیچی',
-                      icon: FontAwesomeIcons.handScissors,
-                      color: secondaryColor,
+                      imagePath: 'assets/images/scissors.png',
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
                             arguments: {'game': MyGameType.handRock});
+                      },
+                    ),
+                    Spacer(),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  children: [
+                    Spacer(),
+                    HomeButtonWidget(
+                      title: 'دوز',
+                      imagePath: 'assets/images/tick_tok_took.png',
+                      press: () {
+                        if (!Get.isSnackbarOpen)
+                          Get.snackbar('بازی دوز',
+                              'این بازی در آپدیت‌های جدید ارائه می‌شود.',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.black,
+                              colorText: Colors.white,
+                              padding: EdgeInsets.all(16));
+                      },
+                    ),
+                    Spacer(
+                      flex: 2,
+                    ),
+                    HomeButtonWidget(
+                      title: 'نقطه بازی',
+                      imagePath: 'assets/images/dote_game.png',
+                      press: () {
+                        if (!Get.isSnackbarOpen)
+                          Get.snackbar('بازی نقطه بازی',
+                              'این بازی در آپدیت‌های جدید ارائه می‌شود.',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.black,
+                              colorText: Colors.white,
+                              padding: EdgeInsets.all(16));
                       },
                     ),
                     Spacer(),

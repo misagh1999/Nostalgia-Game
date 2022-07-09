@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
@@ -8,20 +7,19 @@ class HomeButtonWidget extends StatelessWidget {
   HomeButtonWidget({
     Key? key,
     required this.title,
-    required this.icon,
-    required this.color,
+    required this.imagePath,
     required this.press,
   }) : super(key: key);
   final String title;
-  final IconData icon;
-  final color;
   final VoidCallback press;
+  final String imagePath;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: this.color,
+        color: primaryColor,
+        border: Border.all(width: 3, color: primaryColor),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Material(
@@ -32,15 +30,14 @@ class HomeButtonWidget extends StatelessWidget {
           child: Container(
             width: Get.width / 2.5,
             height: Get.width / 2.5,
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(8),
             child: Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FaIcon(
-                  icon,
-                  color: Colors.white,
-                  size: 40,
+                Image.asset(
+                  imagePath,
+                  width: 56,
                 ),
                 SizedBox(
                   height: 12,
@@ -50,7 +47,7 @@ class HomeButtonWidget extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: Fonts.Bold,
-                      fontSize: 20),
+                      fontSize: 17),
                 ),
               ],
             )),

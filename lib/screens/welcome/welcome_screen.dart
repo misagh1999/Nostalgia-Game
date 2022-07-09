@@ -19,16 +19,21 @@ class WelcomeScreen extends StatelessWidget {
         children: [
           Spacer(),
           Image.asset(
-            'assets/images/logo.png',
+            'assets/images/logo_dark.png',
             width: Get.width / 3,
           ),
           SizedBox(
             height: 16,
           ),
           Text(
-            'بازی گل یا پوچ',
+            'نوستالیژی پلی',
             style: TextStyle(fontFamily: Fonts.Black, fontSize: 24),
           ),
+          Text(
+            'بازی‌های نوستالیژی آنلاین',
+            style: TextStyle(fontFamily: Fonts.Bold, fontSize: 20, color: Colors.grey),
+          ),
+          SizedBox(height: 16,),
           Container(
             width: 48,
             height: 48,
