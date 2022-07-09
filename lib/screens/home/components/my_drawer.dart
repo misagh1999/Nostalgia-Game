@@ -2,6 +2,7 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:handy_dandy_app/widgets/dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../constants.dart';
@@ -25,14 +26,14 @@ Drawer buildMyDrawer() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'نوستالیژی پلی',
+                          'نوستالژی پلی',
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: Fonts.Black,
                               fontSize: 18),
                         ),
                         Text(
-                          'بازی‌های نوستالیژی آنلاین',
+                          'بازی‌های نوستالژی آنلاین',
                           style: TextStyle(
                               fontFamily: Fonts.Medium,
                               fontSize: 12,
@@ -79,6 +80,24 @@ Drawer buildMyDrawer() {
                         .toString(),
                     package: "com.farsitel.bazaar");
                 intent.launch();
+              }
+            }),
+        FutureBuilder(
+            future: MyBackendApi().isUpdateAvailable(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data as bool) {
+                  return _buildNavMenuItem(
+                      title: 'بروزرسانی بازی',
+                      icon: FontAwesomeIcons.download,
+                      press: () {
+                        Get.back();
+                        showUpdateDialog();
+                      });
+                }
+                return SizedBox();
+              } else {
+                return SizedBox();
               }
             }),
         _buildNavMenuItem(

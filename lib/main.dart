@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       locale: Locale("fa", "IR"),
       initialRoute: Routes.WELCOME,
       getPages: AppPages.pages,
-      defaultTransition: Transition.fade,
+      defaultTransition: Transition.fadeIn,
     );
   }
 }

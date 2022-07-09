@@ -26,11 +26,11 @@ class WelcomeScreen extends StatelessWidget {
             height: 16,
           ),
           Text(
-            'نوستالیژی پلی',
+            'نوستالژی پلی',
             style: TextStyle(fontFamily: Fonts.Black, fontSize: 24),
           ),
           Text(
-            'بازی‌های نوستالیژی آنلاین',
+            'بازی‌های نوستالژی آنلاین',
             style: TextStyle(fontFamily: Fonts.Bold, fontSize: 20, color: Colors.grey),
           ),
           SizedBox(height: 16,),
@@ -51,7 +51,8 @@ class WelcomeScreen extends StatelessWidget {
               future: getVersionNumber(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text("نسخه " + (snapshot.data as String),
+                  return Text(replacePersianNum(
+                    "نسخه " + (snapshot.data as String)),
                       style: TextStyle(
                         color: Colors.grey,
                       ));
