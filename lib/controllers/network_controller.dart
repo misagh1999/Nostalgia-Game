@@ -24,14 +24,11 @@ class NetworkController extends GetxController {
     var connectivityResult;
     try {
       connectivityResult = await (_connectivity.checkConnectivity());
-    } on PlatformException catch (e) {
-      print(e);
-    }
+    } on PlatformException catch (e) {}
     return _updateState(connectivityResult);
   }
 
   _updateState(ConnectivityResult result) {
-    print('update state connection');
     switch (result) {
       case ConnectivityResult.wifi:
         connectionType.value = 1;

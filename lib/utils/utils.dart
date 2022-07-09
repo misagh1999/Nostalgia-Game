@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../widgets/dialog.dart';
 import 'package:get/get.dart';

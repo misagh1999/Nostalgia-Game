@@ -101,6 +101,17 @@ class ReadyGameScreen extends StatelessWidget {
                 ),
                 Spacer(),
                 TextField(
+                  onTap: () {
+                    if (controller.aliasTextController.selection ==
+                        TextSelection.fromPosition(TextPosition(
+                            offset: controller.aliasTextController.text.length -
+                                1))) {
+                      controller.aliasTextController.selection =
+                          TextSelection.fromPosition(TextPosition(
+                              offset:
+                                  controller.aliasTextController.text.length));
+                    }
+                  },
                   controller: controller.aliasTextController,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
