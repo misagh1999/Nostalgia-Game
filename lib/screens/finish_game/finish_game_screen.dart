@@ -16,7 +16,7 @@ class FinishGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final result = Get.arguments['result'] as ResultGame;
     return Scaffold(
-      appBar: buildMyAppBar(title: 'پایان'),
+      appBar: buildMyAppBar(title: 'Finish'),
       body: WillPopScope(
         onWillPop: () {
           return _willPopScope();
@@ -79,7 +79,7 @@ class FinishGameScreen extends StatelessWidget {
               width: 8,
             ),
             Text(
-              'بازگشت',
+              'Back',
               style: TextStyle(
                   color: Colors.white, fontFamily: Fonts.Black, fontSize: 20),
             ),
@@ -114,12 +114,12 @@ class FinishGameScreen extends StatelessWidget {
   String _getMessage(ResultGame result) {
     switch (result) {
       case ResultGame.lose:
-        return "شما باختید";
+        return "You Lost";
       case ResultGame.win:
-        return "شما برنده شدید";
+        return "You Won";
       default:
     }
-    return "هیچ کس برنده نشد";
+    return "Nobody Won";
   }
 
   _willPopScope() {

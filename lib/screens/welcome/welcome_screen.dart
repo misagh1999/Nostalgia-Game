@@ -26,14 +26,12 @@ class WelcomeScreen extends StatelessWidget {
             height: 16,
           ),
           Text(
-            'نوستالژی پلی',
+            'Nostalgia Game',
             style: TextStyle(fontFamily: Fonts.Black, fontSize: 24),
           ),
-          Text(
-            'بازی‌های نوستالژی',
-            style: TextStyle(fontFamily: Fonts.Bold, fontSize: 20, color: Colors.grey),
+          SizedBox(
+            height: 16,
           ),
-          SizedBox(height: 16,),
           Container(
             width: 48,
             height: 48,
@@ -44,15 +42,14 @@ class WelcomeScreen extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            'برنامه‌نویس: محمدحسین میثاق‌پور',
+            'Developed by Mohammadhossein Misaghpour',
             style: TextStyle(color: Colors.grey),
           ),
           FutureBuilder(
               future: getVersionNumber(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text(replacePersianNum(
-                    "نسخه " + (snapshot.data as String)),
+                  return Text("v " + (snapshot.data as String),
                       style: TextStyle(
                         color: Colors.grey,
                       ));

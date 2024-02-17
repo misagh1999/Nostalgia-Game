@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:handy_dandy_app/widgets/dialog.dart';
 
 import '../../../constants.dart';
 import '../../../utils/utils.dart';
@@ -24,18 +23,11 @@ Drawer buildMyDrawer() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'نوستالژی پلی',
+                          'Nostalgia Game',
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: Fonts.Black,
                               fontSize: 18),
-                        ),
-                        Text(
-                          'بازی‌های نوستالژی',
-                          style: TextStyle(
-                              fontFamily: Fonts.Medium,
-                              fontSize: 12,
-                              color: Colors.white.withOpacity(0.5)),
                         ),
                       ],
                     ),
@@ -52,9 +44,7 @@ Drawer buildMyDrawer() {
                     future: getVersionNumber(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return Text(
-                            replacePersianNum(
-                                "نسخه " + (snapshot.data as String)),
+                        return Text("v " + (snapshot.data as String),
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.5),
                             ));
@@ -65,16 +55,16 @@ Drawer buildMyDrawer() {
               ],
             )),
         _buildNavMenuItem(
-            title: 'درباره ما',
+            title: 'About Us',
             icon: FontAwesomeIcons.user,
             press: () {
               Get.back();
               Get.defaultDialog(
-                  title: "درباره ما",
-                  middleText: "برنامه‌نویس: محمدحسین میثاق‌پور" +
+                  title: "About Us",
+                  middleText: "Developed by M. Misaghpour" +
                       "\n" +
                       "misagh1999@gmail.com",
-                  textCancel: "بستن",
+                  textCancel: "close",
                   cancelTextColor: primaryColor);
             }),
       ],

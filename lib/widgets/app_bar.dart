@@ -24,9 +24,7 @@ AppBar buildMyAppBar({required String title}) {
           children: [
             Obx(
               () => Text(
-                replacePersianNum(
-                  controller.totalScore.toString(),
-                ),
+                controller.totalScore.toString(),
                 style: TextStyle(fontFamily: Fonts.Medium),
               ),
             ),

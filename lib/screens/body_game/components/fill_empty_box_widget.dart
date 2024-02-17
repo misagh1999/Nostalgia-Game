@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../controllers/fill_empty_controller.dart';
-import '../../../utils/utils.dart';
 
 class FillEmptyBoxWidget extends StatelessWidget {
   FillEmptyBoxWidget({
@@ -28,8 +27,7 @@ class FillEmptyBoxWidget extends StatelessWidget {
           height: Get.width / 2.75,
           width: Get.width / 2.75,
           decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(24)),
+              color: Colors.grey[200], borderRadius: BorderRadius.circular(24)),
           child: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +38,7 @@ class FillEmptyBoxWidget extends StatelessWidget {
                       ? controller.box1Color.value
                       : controller.box2Color.value),
               Text(
-                replacePersianNum('جعبه ' + boxNumber.toString()),
+                'Box ' + boxNumber.toString(),
                 style: TextStyle(
                     fontFamily: Fonts.Black,
                     fontSize: 20,
