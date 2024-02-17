@@ -10,8 +10,8 @@ import 'my_button.dart';
 showMyDialog(
     {required String title,
     required String message,
-    String confirmTitle = "بله",
-    String cancleTitle = "خیر",
+    String confirmTitle = "Yes",
+    String cancleTitle = "No",
     required VoidCallback onCancel,
     required VoidCallback onConfirm}) {
   Get.defaultDialog(
