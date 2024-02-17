@@ -20,7 +20,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    showUpdateDialogIfAvailable();
     return Scaffold(
       appBar: buildMyAppBar(title: 'نوستالژی پلی'),
       drawer: buildMyDrawer(),

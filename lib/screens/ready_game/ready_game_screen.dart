@@ -26,30 +26,6 @@ class ReadyGameScreen extends StatelessWidget {
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    _buildOfflineOnlineToggle(
-                        title: 'آفلاین',
-                        isSelected: !controller.isOnlineMode.value,
-                        onPress: () {
-                          if (!controller.isFinding.value)
-                            controller.setOfflineMode();
-                        }),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    _buildOfflineOnlineToggle(
-                        title: 'آنلاین',
-                        isSelected: controller.isOnlineMode.value,
-                        onPress: () {
-                          if (!controller.isFinding.value)
-                            controller.setOnlineMode();
-                        }),
-                  ],
-                ),
-                SizedBox(
-                  height: 12,
-                ),
                 Spacer(),
                 Row(
                   children: [

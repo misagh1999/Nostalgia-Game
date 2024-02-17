@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
             style: TextStyle(fontFamily: Fonts.Black, fontSize: 24),
           ),
           Text(
-            'بازی‌های نوستالژی آنلاین',
+            'بازی‌های نوستالژی',
             style: TextStyle(fontFamily: Fonts.Bold, fontSize: 20, color: Colors.grey),
           ),
           SizedBox(height: 16,),

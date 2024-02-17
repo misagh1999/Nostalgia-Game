@@ -1,9 +1,7 @@
-import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/widgets/dialog.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../constants.dart';
 import '../../../utils/utils.dart';
@@ -33,7 +31,7 @@ Drawer buildMyDrawer() {
                               fontSize: 18),
                         ),
                         Text(
-                          'بازی‌های نوستالژی آنلاین',
+                          'بازی‌های نوستالژی',
                           style: TextStyle(
                               fontFamily: Fonts.Medium,
                               fontSize: 12,
@@ -66,56 +64,6 @@ Drawer buildMyDrawer() {
                     }),
               ],
             )),
-        _buildNavMenuItem(
-            title: 'امتیاز به برنامه',
-            icon: FontAwesomeIcons.solidStar,
-            press: () async {
-              PackageInfo packageInfo = await PackageInfo.fromPlatform();
-              final packageName = packageInfo.packageName;
-              Get.back();
-              if (GetPlatform.isAndroid) {
-                AndroidIntent intent = AndroidIntent(
-                    action: 'android.intent.action.EDIT',
-                    data: Uri.parse("bazaar://details?id=" + packageName)
-                        .toString(),
-                    package: "com.farsitel.bazaar");
-                intent.launch();
-              }
-            }),
-        FutureBuilder(
-            future: MyBackendApi().isUpdateAvailable(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data as bool) {
-                  return _buildNavMenuItem(
-                      title: 'بروزرسانی بازی',
-                      icon: FontAwesomeIcons.download,
-                      press: () {
-                        Get.back();
-                        showUpdateDialog();
-                      });
-                }
-                return SizedBox();
-              } else {
-                return SizedBox();
-              }
-            }),
-        _buildNavMenuItem(
-            title: 'دیگر برنامه‌ها',
-            icon: FontAwesomeIcons.mobile,
-            press: () {
-              const DEVELOPER_ID = "245778194412";
-              Get.back();
-              if (GetPlatform.isAndroid) {
-                AndroidIntent intent = AndroidIntent(
-                    action: 'android.intent.action.VIEW',
-                    data: Uri.parse("bazaar://collection?slug=by_author&aid=" +
-                            DEVELOPER_ID)
-                        .toString(),
-                    package: "com.farsitel.bazaar");
-                intent.launch();
-              }
-            }),
         _buildNavMenuItem(
             title: 'درباره ما',
             icon: FontAwesomeIcons.user,
