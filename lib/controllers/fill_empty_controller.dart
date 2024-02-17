@@ -4,9 +4,7 @@ import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/utils/utils.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
-import '../data/enums/fe_socket_events.dart';
 import '../data/enums/result_online_game.dart';
 import '../routes/app_pages.dart';
 import '../utils/ui_utils.dart';
@@ -19,8 +17,6 @@ class FillEmptyController extends GetxController {
 
   late RxBool isYourTurn;
   late RxBool isRivalTurn;
-
-  late Socket socket;
 
   RxInt selectedBox = 0.obs;
 
@@ -78,8 +74,6 @@ class FillEmptyController extends GetxController {
 
   RxBool isSelectingRival = false.obs;
 
-  late RxBool isOnlineMode;
-
   RxString get messageTitle {
     var result = "----";
     isSelectingRival.value = true;
@@ -109,10 +103,6 @@ class FillEmptyController extends GetxController {
   void onInit() {
     _initVariables();
     _initializePlayers();
-    if (isOnlineMode.value) {
-      socket = gController.socket;
-      _listenSockets();
-    }
 
     super.onInit();
   }
@@ -129,8 +119,6 @@ class FillEmptyController extends GetxController {
     rivalColor = gController.rivalColor;
     restTurn = gController.restTurn;
     isRivalTurn = gController.isRivalTurn;
-
-    isOnlineMode = gController.isOnlineMode;
   }
 
   _initializePlayers() {
@@ -168,84 +156,7 @@ class FillEmptyController extends GetxController {
 
   @override
   void onClose() {
-    if (isOnlineMode.value) {
-      socket.disconnect();
-      socket.dispose();
-    }
-
     super.onClose();
-  }
-
-  _listenSockets() {
-    socket.on(FeSocketEvents.ON_SELECT, (data) {
-      final Map<String, dynamic> message = data;
-
-      final rBoxNumber = int.parse(message['boxNumber'] as String);
-      final rSenderId = message['senderId'] as String;
-      final rReciverId = message['recieverId'] as String;
-
-      if (rSenderId == rivalId.value && rReciverId == yourId.value) {
-        if (!isYourTurn.value) {
-          canGuess.value = true;
-          selectedBox.value = rBoxNumber;
-        } else {
-          selectedBox.value = rBoxNumber;
-          canSelect.value = false;
-          canGuess.value = false;
-        }
-
-        isYouSelected.value = false;
-      }
-    });
-
-    socket.on(FeSocketEvents.ON_GUESS, (data) {
-      final Map<String, dynamic> message = data;
-
-      final rBoxNumber = int.parse(message['boxNumber'] as String);
-      final rSenderId = message['senderId'] as String;
-      final rReciverId = message['recieverId'] as String;
-
-      if (rSenderId == rivalId.value && rReciverId == yourId.value) {
-        if (isYourTurn.value) {
-          isYourTurn.value = !isYourTurn.value;
-          isRivalTurn.value = true;
-
-          canGuess.value = false;
-          canSelect.value = false;
-
-          if (selectedBox.value != rBoxNumber) {
-            rivalLive.value = rivalLive.value - 1;
-            guessTrue.value = false;
-            blinkColor(rivalColor, false);
-          } else {
-            guessTrue.value = true;
-            blinkColor(rivalColor, true);
-          }
-        }
-
-        isYouSelected.value = false;
-
-        if (turnIndex.value == 1) {
-          turnIndex.value = 2;
-        } else if (turnIndex.value == 2) {
-          turnIndex.value = 1;
-          restTurn.value = restTurn.value - 1;
-          _checkFinishGame();
-        }
-      }
-    });
-
-    socket.on(FeSocketEvents.ON_DISCONNECT_RIVAL, (data) async {
-      Get.back();
-      Get.back();
-      await Future.delayed(Duration(milliseconds: 500));
-      Get.snackbar('قطع اتصال حریف', 'رقیب شما از بازی خارج شد',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          padding: EdgeInsets.all(16),
-          duration: Duration(seconds: 4));
-    });
   }
 
   onClickBox(int box) {
@@ -263,15 +174,7 @@ class FillEmptyController extends GetxController {
   _onSelectBox(int box) {
     isYouSelected.value = true;
 
-    if (isOnlineMode.value) {
-      socket.emit(FeSocketEvents.ON_SELECT, {
-        "boxNumber": box.toString(),
-        "senderId": yourId.value,
-        "recieverId": rivalId.value
-      });
-    } else {
-      _guessRobot();
-    }
+    _guessRobot();
 
     selectedBox.value = box;
   }
@@ -324,14 +227,6 @@ class FillEmptyController extends GetxController {
   }
 
   _onGuessBox(int box) async {
-    if (isOnlineMode.value) {
-      socket.emit(FeSocketEvents.ON_GUESS, {
-        "boxNumber": box.toString(),
-        "senderId": yourId.value,
-        "recieverId": rivalId.value
-      });
-    }
-
     if (box != selectedBox.value) {
       yourLive.value = yourLive.value - 1;
       guessTrue.value = false;

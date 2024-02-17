@@ -51,7 +51,6 @@ class LotteryController extends GetxController {
     box.put('last_try_lottery', today);
     canReturn.value = true;
     isLoading.value = false;
-    // todo: add result to firebase
     homeController.addLotteryScore(resultScore.value);
   }
 }

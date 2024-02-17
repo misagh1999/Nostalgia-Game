@@ -32,10 +32,8 @@ class ReadyGameScreen extends StatelessWidget {
                     ScoreTypeButton(
                       score: '10',
                       isSelected: homeController.currentTypeIndex.value == 1,
-                      isEnabled: !controller.isOnlineMode.value,
                       press: () {
-                        if (!controller.isOnlineMode.value)
-                          homeController.select10Score();
+                        homeController.select10Score();
                       },
                     ),
                     SizedBox(
@@ -44,10 +42,8 @@ class ReadyGameScreen extends StatelessWidget {
                     ScoreTypeButton(
                       score: '25',
                       isSelected: homeController.currentTypeIndex.value == 2,
-                      isEnabled: !controller.isOnlineMode.value,
                       press: () {
-                        if (!controller.isOnlineMode.value)
-                          homeController.select25Score();
+                        homeController.select25Score();
                       },
                     ),
                     SizedBox(

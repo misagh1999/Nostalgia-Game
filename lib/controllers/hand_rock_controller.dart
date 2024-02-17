@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:handy_dandy_app/data/enums/hr_socket_events.dart';
 import 'package:handy_dandy_app/logic/hand_rock_rule.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
 import '../data/enums/result_online_game.dart';
 import '../routes/app_pages.dart';
@@ -18,8 +16,6 @@ class HandRockController extends GetxController {
   final GameController gController = Get.find();
   final HomeController homeController = Get.find();
 
-  late Socket socket;
-
   late RxBool isFinisedGame;
 
   late RxString yourId;
@@ -33,8 +29,6 @@ class HandRockController extends GetxController {
 
   late RxBool isRivalTurn;
   late RxBool isYourTurn;
-
-  late RxBool isOnlineMode;
 
   Rx<Color> yourOptionColor = Colors.white.obs;
   Rx<Color> rivalOptionColor = Colors.white.obs;
@@ -107,44 +101,7 @@ class HandRockController extends GetxController {
     _initVariables();
     isYourTurn.value = false;
     _retry();
-    if (isOnlineMode.value) {
-      socket = gController.socket;
-      _listenSockets();
-    }
     super.onInit();
-  }
-
-  _listenSockets() {
-    socket.on(HrSocketEvents.ON_SELECT, (data) {
-      final Map<String, dynamic> message = data;
-
-      final optionStr = message['option'] as String;
-      final rSenderId = message['senderId'] as String;
-      final rReciverId = message['recieverId'] as String;
-
-      if (rSenderId == rivalId.value && rReciverId == yourId.value) {
-        rivalStatus.value = RivalStatus.selected;
-        rivalOptionType.value = _strToOptionType(optionStr);
-
-        if (yourStatus.value == RivalStatus.selected) {
-          _checkResult();
-        }
-      }
-    });
-
-    socket.on(HrSocketEvents.ON_DISCONNECT_RIVAL, (data) async {
-      if (!isFinisedGame.value) {
-        Get.back();
-        Get.back();
-        await Future.delayed(Duration(milliseconds: 500));
-        Get.snackbar('قطع اتصال حریف', 'رقیب شما از بازی خارج شد',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            padding: EdgeInsets.all(16),
-            duration: Duration(seconds: 4));
-      }
-    });
   }
 
   _initVariables() {
@@ -161,8 +118,6 @@ class HandRockController extends GetxController {
     isRivalTurn = gController.isRivalTurn;
 
     isFinisedGame = gController.isFinishedGame;
-
-    isOnlineMode = gController.isOnlineMode;
   }
 
   onChooseButton(OptionType optionType) {
@@ -170,19 +125,7 @@ class HandRockController extends GetxController {
       yourStatus.value = RivalStatus.selected;
       yourOptionType.value = optionType;
 
-      if (isOnlineMode.value) {
-        socket.emit(HrSocketEvents.ON_SELECT, {
-          'option': _optionTypeToStr(optionType),
-          'senderId': yourId.value,
-          'recieverId': rivalId.value
-        });
-
-        if (rivalStatus.value == RivalStatus.selected) {
-          _checkResult();
-        }
-      } else {
-        _selectRobot();
-      }
+      _selectRobot();
     }
   }
 
