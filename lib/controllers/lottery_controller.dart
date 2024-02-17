@@ -52,9 +52,6 @@ class LotteryController extends GetxController {
     canReturn.value = true;
     isLoading.value = false;
     // todo: add result to firebase
-    homeController.analytics.logEvent(
-        name: 'try_lottery',
-        parameters: <String, dynamic>{"score": resultScore.value});
     homeController.addLotteryScore(resultScore.value);
   }
 }

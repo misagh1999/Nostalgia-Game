@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -6,8 +5,6 @@ class HomeController extends GetxController {
   RxInt totalScore = 0.obs;
   RxInt currentTypeScore = 25.obs;
   RxInt currentTypeIndex = 2.obs;
-
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void onInit() {
