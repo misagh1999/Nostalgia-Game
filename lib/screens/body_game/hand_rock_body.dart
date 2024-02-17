@@ -23,7 +23,7 @@ class HandRockBody extends StatelessWidget {
               children: [
                 Spacer(),
                 _buildSelectedOption(
-                    title: 'انتخاب شما',
+                    title: 'Your Turn',
                     color: controller.yourOptionColor.value,
                     icon: controller.yourOptionIcon.value,
                     isSelecting:
@@ -32,7 +32,7 @@ class HandRockBody extends StatelessWidget {
                   flex: 2,
                 ),
                 _buildSelectedOption(
-                    title: 'انتخاب حریف',
+                    title: 'Rival Turn',
                     color: controller.rivalOptionColor.value,
                     icon: controller.rivalOptionIcon.value,
                     isSelecting: controller.rivalStatus.value ==
@@ -44,7 +44,7 @@ class HandRockBody extends StatelessWidget {
               height: 16,
             ),
             Divider(),
-            Text('گزینه خود را انتخاب کنید'),
+            Text('Please Choose Your Option'),
             SizedBox(
               height: 12,
             ),

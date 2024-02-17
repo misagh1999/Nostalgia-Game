@@ -5,7 +5,6 @@ import 'package:handy_dandy_app/constants.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
-import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 import 'components/score_type_button.dart';
@@ -63,12 +62,12 @@ class ReadyGameScreen extends StatelessWidget {
                 ),
                 Divider(),
                 Text(
-                  'امتیاز این بازی',
+                  'Game Score',
                   style: TextStyle(
                       fontFamily: Fonts.Bold, fontSize: 18, color: Colors.grey),
                 ),
                 Text(
-                  replacePersianNum(homeController.currentTypeScore.toString()),
+                  homeController.currentTypeScore.toString(),
                   style: TextStyle(fontFamily: Fonts.Black, fontSize: 28),
                 ),
                 Spacer(),
@@ -87,7 +86,7 @@ class ReadyGameScreen extends StatelessWidget {
                   controller: controller.aliasTextController,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                      hintText: 'نام مستعار',
+                      hintText: 'Your Name',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20))),
                 ),
@@ -124,7 +123,7 @@ class ReadyGameScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'در حال جستجوی رقیب',
+                        'is searching Rival',
                         style: TextStyle(
                             fontFamily: Fonts.Bold,
                             fontSize: 18,
@@ -143,7 +142,7 @@ class ReadyGameScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'شروع',
+                        'Play',
                         style: TextStyle(
                             fontFamily: Fonts.Bold,
                             fontSize: 18,

@@ -1,13 +1,11 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/game_controller.dart';
 import 'package:handy_dandy_app/controllers/home_controller.dart';
 import 'package:handy_dandy_app/routes/app_pages.dart';
-import 'package:handy_dandy_app/utils/utils.dart';
 
 import '../../widgets/app_bar.dart';
 import 'components/home_button_widget.dart';
@@ -21,12 +19,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildMyAppBar(title: 'نوستالژی پلی'),
+      appBar: buildMyAppBar(title: 'Nostalgia Game'),
       drawer: buildMyDrawer(),
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           content: Text(
-            'برای خروج دوباره دکمه بازگشت را بفشارید',
+            'Please Press Back Button Again to Exit',
             style: TextStyle(fontFamily: Fonts.Regular),
           ),
         ),
@@ -44,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Spacer(),
                     HomeButtonWidget(
-                      title: 'گل یا پوچ',
+                      title: 'Guess Box',
                       imagePath: 'assets/images/fill_empty.png',
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
@@ -55,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                       flex: 2,
                     ),
                     HomeButtonWidget(
-                      title: 'سنگ کاغذ قیچی',
+                      title: 'Rock Paper Scissors',
                       imagePath: 'assets/images/scissors.png',
                       press: () {
                         Get.toNamed(Routes.READY_GAME,
@@ -72,12 +70,12 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Spacer(),
                     HomeButtonWidget(
-                      title: 'دوز',
+                      title: 'Tic Tac Toe',
                       imagePath: 'assets/images/tick_tok_took.png',
                       press: () {
                         if (!Get.isSnackbarOpen)
-                          Get.snackbar('بازی دوز',
-                              'این بازی در آپدیت‌های جدید ارائه می‌شود.',
+                          Get.snackbar('Tic Tac Toe Game',
+                              'This game will be availble in next updates',
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: Colors.black,
                               colorText: Colors.white,
@@ -88,12 +86,12 @@ class HomeScreen extends StatelessWidget {
                       flex: 2,
                     ),
                     HomeButtonWidget(
-                      title: 'نقطه بازی',
+                      title: 'Dot Game',
                       imagePath: 'assets/images/dote_game.png',
                       press: () {
                         if (!Get.isSnackbarOpen)
-                          Get.snackbar('بازی نقطه بازی',
-                              'این بازی در آپدیت‌های جدید ارائه می‌شود.',
+                          Get.snackbar('Dot Game',
+                              'This game will be availble in next updates',
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: Colors.black,
                               colorText: Colors.white,
@@ -125,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'قرعه کشی روزانه',
+                          'Daily Lottery',
                           style:
                               TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
                         ),

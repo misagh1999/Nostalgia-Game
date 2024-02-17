@@ -17,16 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'گل یا پوچ',
-      localizationsDelegates: [
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
+      title: 'Nostalgia Game',
       debugShowCheckedModeBanner: false,
-      supportedLocales: [Locale("en", "US"), Locale("fa", "IR")],
       theme: lightThemeData(context),
-      locale: Locale("fa", "IR"),
       initialRoute: Routes.WELCOME,
       getPages: AppPages.pages,
       defaultTransition: Transition.fadeIn,

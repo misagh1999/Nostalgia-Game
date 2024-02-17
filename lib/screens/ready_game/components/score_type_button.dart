@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
-import '../../../utils/utils.dart';
 import 'package:get/get.dart';
 
 class ScoreTypeButton extends StatelessWidget {
@@ -52,7 +51,7 @@ class ScoreTypeButton extends StatelessWidget {
                         ),
                       )),
             Text(
-              replacePersianNum(score),
+              score,
               style: TextStyle(
                   fontFamily: Fonts.Bold,
                   fontSize: 24,

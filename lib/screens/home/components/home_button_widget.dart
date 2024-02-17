@@ -44,6 +44,7 @@ class HomeButtonWidget extends StatelessWidget {
                 ),
                 Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: Fonts.Bold,

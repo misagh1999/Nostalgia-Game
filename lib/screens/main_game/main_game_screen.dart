@@ -5,7 +5,6 @@ import 'package:handy_dandy_app/screens/body_game/fill_empty_body.dart';
 import 'package:handy_dandy_app/screens/body_game/hand_rock_body.dart';
 
 import '../../constants.dart';
-import '../../utils/utils.dart';
 import '../../widgets/app_bar.dart';
 import '../../widgets/rest_live_widget.dart';
 
@@ -31,23 +30,21 @@ class MainGameScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text('نوبت باقی مانده'),
+                      Text('Remaining Turn'),
                       SizedBox(
                         width: 8,
                       ),
                       Text(
-                        replacePersianNum(controller.restTurn.toString()),
+                        controller.restTurn.toString(),
                         style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
                       ),
                       Spacer(),
-                      Text('امتیاز بازی'),
+                      Text('Game Score'),
                       SizedBox(
                         width: 8,
                       ),
                       Text(
-                        replacePersianNum(controller
-                            .homeController.currentTypeScore
-                            .toString()),
+                        controller.homeController.currentTypeScore.toString(),
                         style: TextStyle(fontFamily: Fonts.Bold, fontSize: 18),
                       ),
                     ],

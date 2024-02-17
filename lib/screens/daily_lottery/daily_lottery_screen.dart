@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:handy_dandy_app/constants.dart';
 import 'package:handy_dandy_app/controllers/lottery_controller.dart';
-import 'package:handy_dandy_app/utils/utils.dart';
 import 'package:handy_dandy_app/widgets/app_bar.dart';
 
 class DailyLotteryScreen extends StatelessWidget {
@@ -16,7 +14,7 @@ class DailyLotteryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildMyAppBar(title: 'قرعه کشی روزانه'),
+      appBar: buildMyAppBar(title: 'Daily Lottery'),
       body: SafeArea(
         child: Obx(
           () => Container(
@@ -60,7 +58,7 @@ class DailyLotteryScreen extends StatelessWidget {
           child: AnimatedContainer(
             duration: Duration(milliseconds: 40),
             child: Text(
-              replacePersianNum(controller.resultScore.toString()),
+              controller.resultScore.toString(),
               style: TextStyle(fontFamily: Fonts.Bold, fontSize: 40),
             ),
           ),
@@ -82,7 +80,7 @@ class DailyLotteryScreen extends StatelessWidget {
             height: 16,
           ),
           Text(
-            'شما شانس امروز خود را امتحان کرده‌اید',
+            'You have tried your chance today!',
             style: TextStyle(
               fontFamily: Fonts.Medium,
             ),
@@ -90,7 +88,7 @@ class DailyLotteryScreen extends StatelessWidget {
           SizedBox(
             height: 4,
           ),
-          Text('برای شانس مجدد، فردا امتحان کنید'),
+          Text('For another chance please try tommorow'),
         ],
       ),
     );
@@ -109,7 +107,7 @@ class DailyLotteryScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'امتحان کن',
+              'Try It',
               style: TextStyle(
                   fontFamily: Fonts.Bold, fontSize: 20, color: Colors.white),
             ),
@@ -146,7 +144,7 @@ class DailyLotteryScreen extends StatelessWidget {
               width: 8,
             ),
             Text(
-              'بازگشت',
+              'Back',
               style: TextStyle(
                   fontFamily: Fonts.Bold, fontSize: 20, color: Colors.white),
             ),

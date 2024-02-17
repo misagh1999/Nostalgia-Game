@@ -10,11 +10,11 @@ import '../routes/app_pages.dart';
 import '../widgets/dialog.dart';
 
 const ROBOT_ID = "99999999";
-const ROBOT_ALIAS = 'ربات';
+const ROBOT_ALIAS = 'Robot';
 
 class GameController extends GetxController {
-  RxString gameTitle = "بازی".obs;
-  RxString gameDescription = "توضیحات این بازی که خوب است.".obs;
+  RxString gameTitle = "Game".obs;
+  RxString gameDescription = "Game Description".obs;
 
   RxBool isFinishedGame = false.obs;
 
@@ -31,11 +31,11 @@ class GameController extends GetxController {
 
     if (homeController.totalScore.value <
         homeController.currentTypeScore.value) {
-      result = 'مجموع امتیاز شما برای بازی کافی نیست';
+      result = 'Your Total score is not enough';
     }
 
     if (aliasTextController.text.trim() == "") {
-      result = 'نام مستعار خود را وارد کنید';
+      result = 'Please enter your name';
     }
 
     return result.obs;
@@ -43,18 +43,18 @@ class GameController extends GetxController {
 
   RxBool isYourTurn = false.obs;
   Rx<Color> yourColor = lightGreyColor!.obs;
-  RxString yourAlias = "شما".obs;
+  RxString yourAlias = "You".obs;
   RxInt yourLive = 3.obs;
 
   RxString yourId = "".obs;
 
   RxBool isRivalTurn = false.obs;
   Rx<Color> rivalColor = lightGreyColor!.obs;
-  RxString rivalAlias = "حریف".obs;
+  RxString rivalAlias = "Rival".obs;
   RxInt rivalLive = 3.obs;
   RxString rivalId = "".obs;
 
-  RxString rivalStatusStr = "حریف شما در حال انتخاب است".obs;
+  RxString rivalStatusStr = "Your rival is selecting".obs;
   RxBool isLoadingRival = false.obs;
 
   late StatelessWidget mainBodyWidget;
@@ -71,10 +71,10 @@ class GameController extends GetxController {
     myGameType = Get.arguments['game'] as MyGameType;
 
     if (myGameType == MyGameType.fillEmpty) {
-      gameTitle.value = 'گل یا پوچ';
+      gameTitle.value = 'Guess Box';
       gameDescription.value = READY_DESC_FE;
     } else if (myGameType == MyGameType.handRock) {
-      gameTitle.value = 'سنگ کاغذ قیچی';
+      gameTitle.value = 'Rock Paper Scissors';
       gameDescription.value = READY_DESC_HAND_ROCK;
     }
 
@@ -88,8 +88,8 @@ class GameController extends GetxController {
 
   onWillPop() {
     showMyDialog(
-        title: 'خروج از بازی',
-        message: 'آیا برای خروج اطمینان دارید؟',
+        title: 'Exit',
+        message: 'Are you sure to exit',
         onCancel: () {
           Get.back();
         },
